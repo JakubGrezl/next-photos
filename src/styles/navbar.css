@@ -4,6 +4,7 @@ nav {
     align-items: center;
     padding: 0 2rem;
     height: 4rem;
+    z-index: 20;
 }
 
 nav h1 {
