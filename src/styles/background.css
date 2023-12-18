@@ -1,0 +1,32 @@
+.background {
+    position: relative;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.background::before {
+    content: '';
+    position: absolute;
+    width: 300vw;
+    /* Increased width */
+    height: 300vh;
+    /* Increased height */
+    top: -100vh;
+    /* Adjusted to center */
+    left: -100vw;
+    /* Adjusted to center */
+    background-image: linear-gradient(0deg, #FFC9F3, white, #C2EDFF);
+    z-index: -1;
+    animation: rotating 30s linear infinite;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

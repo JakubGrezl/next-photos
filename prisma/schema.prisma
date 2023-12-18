@@ -1,0 +1,43 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id         String     @id @default(uuid())
+    email      String     @unique
+    name       String?
+    privilages Privilages @default(USER)
+    createdAt  DateTime   @default(now())
+    lastLogin  DateTime   @updatedAt
+    photos     Photo[]
+    comments   Comment[]
+}
+
+model Photo {
+    id        String    @id @default(uuid())
+    path      String
+    createdAt DateTime  @default(now())
+    userId    String
+    user      User      @relation(fields: [userId], references: [id])
+    Comment   Comment[]
+}
+
+model Comment {
+    id        String   @id @default(uuid())
+    text      String
+    createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
+    photo     Photo    @relation(fields: [photoId], references: [id])
+    photoId   String
+}
+
+enum Privilages {
+    USER
+    ADMIN
+}

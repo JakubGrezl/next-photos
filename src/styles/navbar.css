@@ -1,0 +1,22 @@
+nav {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 0 2rem;
+    height: 4rem;
+}
+
+nav h1 {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    flex-direction: row;
+    gap: 40px;
+}
