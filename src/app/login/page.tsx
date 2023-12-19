@@ -3,7 +3,7 @@ import "../../styles/login.css";
 
 export default async function Login() {
   return (
-    <main className="centered-from-header">
+    <main>
       <Form />
     </main>
   );
