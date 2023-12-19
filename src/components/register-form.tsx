@@ -3,7 +3,7 @@ import "../styles/form.css";
 export default async function Form() {
   return (
     <main>
-      <div className="wrapper centered-from-header">
+      <div className="wrapper">
         <h1>Register</h1>
         <form>
           <div className="input-wrapper">
