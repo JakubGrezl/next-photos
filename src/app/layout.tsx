@@ -4,8 +4,8 @@ import { Inter } from "next/font/google";
 import { Montserrat } from "next/font/google";
 import { cookies } from "next/headers";
 
-import Header from "./header";
-import "../styles/background.css";
+import Header from "@/components/header";
+import RotatingBackround from "@/components/rotating-background";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,8 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="background">
+    <html lang="en">
       <body className={montserrat.className}>
+        <RotatingBackround />
         <Header />
         {children}
       </body>

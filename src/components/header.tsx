@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../styles/navbar.css";
+import "@/styles/navbar.css";
 
 // definovaní objektu Link
 
@@ -30,7 +30,6 @@ export default function Header() {
       <nav>
         <h1>Next Photos</h1>
         <ul>
-          {/* tady se generujou linky do navbaru z pole */}
           {links.map((link) => (
             <li>
               <a href={link.src}>{link.title}</a>

@@ -1,32 +1,20 @@
-.background {
-    position: relative;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-}
+#bgimg {
+    position: fixed;
+    /* Center element on page */
+    top: 50%;
+    left: 50%;
+    /* You have to center the image using center center */
+    animation: spin 15s linear infinite;
+    transform-origin: center center;
+    /* background-image: linear-gradient(0deg, #fc00c5, white, #00b3ff); */
 
-.background::before {
-    content: '';
-    position: absolute;
-    width: 300vw;
-    /* Increased width */
-    height: 300vh;
-    /* Increased height */
-    top: -100vh;
-    /* Adjusted to center */
-    left: -100vw;
-    /* Adjusted to center */
     background-image: linear-gradient(0deg, #FFC9F3, white, #C2EDFF);
     z-index: -1;
-    animation: rotating 30s linear infinite;
 }
 
-@keyframes rotating {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
 }
