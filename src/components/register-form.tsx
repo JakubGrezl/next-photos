@@ -1,4 +1,4 @@
-import "../styles/form.css";
+import "@/styles/form.css";
 
 export default async function Form() {
   return (
