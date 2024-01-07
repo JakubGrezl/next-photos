@@ -25,6 +25,15 @@ model Photo {
     userId    String
     user      User      @relation(fields: [userId], references: [id])
     Comment   Comment[]
+    location  Location?
+}
+
+model Location {
+    id      String @id @default(uuid())
+    lat     Float
+    lng     Float
+    photo   Photo  @relation(fields: [photoId], references: [id])
+    photoId String @unique
 }
 
 model Comment {

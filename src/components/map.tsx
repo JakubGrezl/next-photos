@@ -10,7 +10,7 @@ type coordinates = {
 
 export function ChangeView({ coords }: { coords: coordinates }) {
   const map = useMap();
-  map.setView([coords.latitude, coords.longitude], 12);
+  map.setView([coords.latitude, coords.longitude], 15);
   return null;
 }
 
