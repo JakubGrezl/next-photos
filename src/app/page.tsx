@@ -1,3 +1,3 @@
 export default async function Home() {
-  return <main>Cus</main>;
+  return <main>In build</main>;
 }

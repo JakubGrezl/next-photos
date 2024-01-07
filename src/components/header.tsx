@@ -12,16 +12,12 @@ interface Link {
 export default function Header() {
   const links: Array<Link> = [
     {
-      src: "/",
-      title: "Home",
+      src: "/login",
+      title: "Login",
     },
     {
-      src: "/about",
-      title: "About",
-    },
-    {
-      src: "/contact",
-      title: "Contact",
+      src: "/register",
+      title: "Register",
     },
   ];
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "@/styles/profilecard.scss";
+import "@/styles/profilecard.css";
 
 interface ProfileInformation {
   informationType: string;
@@ -8,8 +8,8 @@ interface ProfileInformation {
 
 export default async function ProfileCard(props: ProfileInformation) {
   return (
-    <div className="wrapper">
-      <div className="type">{props.informationType}</div>
+    <div className="profile-card-wrapper">
+      <div className="title">{props.informationType}</div>
       <div className="value">{props.informationValue}</div>
     </div>
   );
