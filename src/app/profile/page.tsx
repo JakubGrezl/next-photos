@@ -18,9 +18,7 @@ export default async function Profile() {
           <ProfileCard informationType="Photos taken" informationValue="69" />
         </div>
       </div>
-      <div className="photos-wrapper">
-        
-      </div>
+      <div className="photos-wrapper"></div>
     </main>
   );
 }

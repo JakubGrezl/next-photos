@@ -1,5 +1,5 @@
-import Form from "../../components/form";
-import "../../styles/login.css";
+import Form from "@/components/form";
+import "@/styles/login.css";
 
 export default async function Login() {
   return (
