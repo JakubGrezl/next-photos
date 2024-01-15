@@ -1,13 +1,9 @@
 #bgimg {
     position: fixed;
-    /* Center element on page */
     top: 50%;
     left: 50%;
-    /* You have to center the image using center center */
     animation: spin 15s linear infinite;
     transform-origin: center center;
-    /* background-image: linear-gradient(0deg, #fc00c5, white, #00b3ff); */
-
     background-image: linear-gradient(0deg, #FFC9F3, white, #C2EDFF);
     z-index: -1;
 }

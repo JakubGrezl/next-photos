@@ -1,10 +1,5 @@
 import "../styles/form.css";
 
-// interface LoginFormSchema {
-//   username: string;
-//   password: string;
-// }
-
 export default async function Form() {
   return (
     <main>
