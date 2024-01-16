@@ -14,7 +14,7 @@ export default async function Home() {
   const imageFilenames = await fs.readdir(imageDirectory);
 
   return (
-    <div className="wrapper">
+    <div>
       <Photos images={imageFilenames} />
     </div>
   );

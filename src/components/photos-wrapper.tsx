@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Photos = ({ images }: { images: Array<string> }) => {
   return (
-    <div className="wrapper">
+    <div className="photos-wrapper">
       {images.map((el: string) => (
         <Image
           className="photo"
