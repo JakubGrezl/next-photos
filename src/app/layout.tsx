@@ -6,6 +6,8 @@ import { cookies } from "next/headers";
 
 import Header from "@/components/header";
 import RotatingBackround from "@/components/rotating-background";
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,19 +25,21 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
+  const session = await auth();
   return (
-    <html lang="en">
-      <body className={montserrat.className}>
-        <RotatingBackround />
-        <Header />
-        {children}
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <html lang="en">
+        <body className={montserrat.className}>
+          <RotatingBackround />
+          <Header />
+          {children}
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

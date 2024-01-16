@@ -1,12 +1,10 @@
-
-
 export const publicRouters = [
     "/"
 ];
 
 export const authRoutes = [
-    "auth/login",
-    "/auth/register"
+    "/login",
+    "/register"
 ]
 
 export const apiAuthPrefix = "/api/auth";

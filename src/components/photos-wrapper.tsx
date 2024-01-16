@@ -1,5 +1,6 @@
 import "@/styles/photos-wrapper.css";
 import Image from "next/image";
+import Link from "next/link";
 
 const Gallery = ({ images }: { images: Array<string> }) => {
   return (
