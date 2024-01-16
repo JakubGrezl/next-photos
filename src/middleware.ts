@@ -15,10 +15,14 @@ export default auth((req) => {
     const { nextUrl } = req;
     // pokud existuje v req auth, tak je logged in 
     const isLoggedIn = !!req.auth;
-    
+
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoutes = publicRouters.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+    if (nextUrl.pathname == "/github") {
+        return Response.redirect(new URL("https://github.com/JakubGrezl/next-photos", nextUrl));
+    }
 
     if (isApiAuthRoute) {
         return null;
@@ -34,6 +38,7 @@ export default auth((req) => {
     if (!isLoggedIn && !isPublicRoutes) {
         return Response.redirect(new URL("/login", nextUrl));
     }
+
 
     return null;
 })
