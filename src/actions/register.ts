@@ -18,11 +18,24 @@ export const register = async (values: z.infer<typeof UserSchemaRegister>) => {
     const { name, password, email } = values;
 
     // kontrola, jestli existuje uz user
-    db.user.findUnique({
-        where: {
-            email: email,
-        },
-    })
+    try {
+        await db.user.findUnique({
+            where: {
+                email,
+            },
+        });
+    } catch (error) {
+        return { error: "Tento email už je zaregistrovaný!" };
+    }
+    try {
+        await db.user.findUnique({
+            where: {
+                name,
+            },
+        });
+    } catch (error) {
+        return { error: "Uživatelské jméno už nekdo používá!" };
+    }
 
     // hashovani pres bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);

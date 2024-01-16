@@ -9,7 +9,7 @@ export default async function Home() {
     ssr: true,
   });
 
-  const imageDirectory = path.join("/public/uploads");
+  const imageDirectory = path.join(process.cwd(), "/public/uploads");
   // precte adresar a ulozi cesty k souborum do pole
   const imageFilenames = await fs.readdir(imageDirectory);
 
