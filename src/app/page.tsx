@@ -1,3 +1,9 @@
+import "@/styles/photos-wrapper"
+
 export default async function Home() {
-  return <main>In build</main>;
+  return <main>
+    <div className="photos-wrapper">
+
+    </div>
+  </main>;
 }
