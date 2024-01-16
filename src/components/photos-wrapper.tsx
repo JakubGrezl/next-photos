@@ -1,7 +1,7 @@
 import "@/styles/photos-wrapper.css";
 import Image from "next/image";
 
-const Gallery = ({ images }: { images: Array<string> }) => {
+const Photos = ({ images }: { images: Array<string> }) => {
   return (
     <div className="wrapper">
       {images.map((el: string) => (
@@ -18,4 +18,4 @@ const Gallery = ({ images }: { images: Array<string> }) => {
   );
 };
 
-export default Gallery;
+export default Photos;

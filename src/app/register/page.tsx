@@ -1,10 +1,14 @@
-import Form from "../../components/register-form";
-import "../../styles/login.css";
+import "@/styles/login.css";
+import dynamic from "next/dynamic";
 
 export default async function Register() {
+  const RegisterForm = dynamic(() => import("@/components/register-form"), {
+    ssr: false,
+  });
+
   return (
     <main>
-      <Form />
+      <RegisterForm />
     </main>
   );
 }

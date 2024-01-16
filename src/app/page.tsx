@@ -6,7 +6,7 @@ export default async function Home() {
   // dynamické načítání komponenty -> lazy loading pridam
 
   const Photos = dynamic(() => import("@/components/photos-wrapper"), {
-    ssr: true,
+    ssr: false,
   });
 
   const imageDirectory = path.join(process.cwd(), "/public/uploads");
