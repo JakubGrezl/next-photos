@@ -1,10 +1,14 @@
-import Form from "@/components/login-form";
+import dynamic from "next/dynamic";
 import "@/styles/login.css";
 
 export default async function Login() {
+  const LoginForm = dynamic(() => import("@/components/login-form"), {
+    ssr: true,
+  });
+
   return (
     <main>
-      <Form />
+      <LoginForm />
     </main>
   );
 }

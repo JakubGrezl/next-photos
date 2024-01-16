@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 
 export const userByEmail = async (email: string) => {
+    // ziskava zaznam pomoci prisma jedinacka
     try {
         const user = await db.user.findUnique({
             where: {

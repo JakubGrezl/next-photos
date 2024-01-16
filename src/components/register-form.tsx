@@ -28,7 +28,7 @@ export default async function Form() {
 
   return (
     <main>
-      <div className="wrapper centered-from-header">
+      <div className="form-wrapper centered-from-header">
         <h1>Register</h1>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="input-wrapper">

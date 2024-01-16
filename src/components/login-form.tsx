@@ -20,12 +20,12 @@ export default async function Form() {
 
   const onSubmit = (values: z.infer<typeof UserSchema>) => {
     startTransition(() => {
-      login(values).then(() => {});
+      login(values);
     });
   };
   return (
     <main>
-      <div className="wrapper centered-from-header">
+      <div className="form-wrapper centered-from-header">
         <h1>Login</h1>
         <form onSubmit={form.handleSubmit(onSubmit)} action="submit">
           <div className="input-wrapper">
@@ -34,6 +34,7 @@ export default async function Form() {
               type="email"
               id="email"
               disabled={isPending}
+              // spreading => atributy se přidají do inputu
               {...form.register("email")}
             />
           </div>
@@ -43,6 +44,7 @@ export default async function Form() {
               type="password"
               id="password"
               disabled={isPending}
+              // spreading => atributy se přidají do inputu
               {...form.register("password")}
             />
           </div>

@@ -8,6 +8,7 @@ import { userByEmail } from "@/data/user";
 export default {
     providers: [
         Credentials({
+            // zavola se pri volani signIn funkce s parametrem credentials
             async authorize(credentials) {
                 const validatedFields = await UserSchema.safeParse(credentials);
 

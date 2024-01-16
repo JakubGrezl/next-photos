@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import "@/styles/background.css";
 
 export default function RotatingBackround() {
+  // tenhle kod zarucuje, ze rotujici se div nebude presahovat stranku
   useEffect(() => {
     const resizeBackground = () => {
       const bg = document.getElementById("bgimg");

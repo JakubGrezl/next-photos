@@ -1,15 +1,16 @@
-import authConfig from "./src/auth.config"
+import authConfig from "@/auth.config"
 import NextAuth from "next-auth"
+const { auth } = NextAuth(authConfig)
+
 
 import {
     DEFAULT_LOGIN_REDIRECT,
     apiAuthPrefix,
     authRoutes,
     publicRouters,
-} from "./routes"
+} from "@/routes"
 
-const { auth } = NextAuth(authConfig)
-
+// middleware presmerovava pred vztupem do stranky
 export default auth((req) => {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
@@ -29,13 +30,16 @@ export default auth((req) => {
         return null;
     }
 
-    if (!isPublicRoutes) {
+    if (!isLoggedIn && !isPublicRoutes) {
         return Response.redirect(new URL("/login", nextUrl));
     }
+
+
 
     return null;
 })
 
 export const config = {
-    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+    // matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }
