@@ -1,5 +1,6 @@
 export const publicRouters = [
-    "/"
+    "/",
+    "/github"
 ];
 
 export const authRoutes = [
