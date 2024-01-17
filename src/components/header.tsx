@@ -12,7 +12,10 @@ const Header = async () => {
         <h1>Next Photos</h1>
         <ul>
           {session ? (
-            <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
+            <>
+              <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
+              <Link href="/profile">Profile</Link>
+            </>
           ) : (
             <>
               <Link href="/login">Login</Link>

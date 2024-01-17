@@ -28,6 +28,7 @@ export default async function Form() {
       <div className="form-wrapper centered-from-header">
         <h1>Login</h1>
         <form onSubmit={form.handleSubmit(onSubmit)} action="submit">
+          <p>Error-log:</p>
           <div className="input-wrapper">
             <label htmlFor="email">Email</label>
             <input
