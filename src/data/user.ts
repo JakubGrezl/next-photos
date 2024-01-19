@@ -34,7 +34,7 @@ export const userByName = async (name: string) => {
                 name,
             },
         });
-        return null
+        return user;
     } catch (error) {
         return null;
     }

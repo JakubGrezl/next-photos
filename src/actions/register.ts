@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { UserSchemaRegister } from "@/schema";
 import { db } from "@/lib/db";
 import { userByName } from "@/data/user";
+import { userByEmail } from "@/data/user";
 
 export const register = async (values: z.infer<typeof UserSchemaRegister>) => {
     // validuje se formular, predany v values, pomoci schematu v UserSchemaRegister
@@ -13,46 +14,33 @@ export const register = async (values: z.infer<typeof UserSchemaRegister>) => {
 
     if (!validatedFields.success) {
         return { error: "Invalid fields!" };
-    }
-
-    const { name, password, email } = values;
-
-    // kontrola, jestli existuje uz user
-    try {
-        await db.user.findUnique({
-            where: {
-                email,
-            },
-        });
-    } catch (error) {
-        return { error: "Tento email už je zaregistrovaný!" };
-    }
-    try {
-        await db.user.findUnique({
-            where: {
-                name,
-            },
-        });
-    } catch (error) {
-        return { error: "Uživatelské jméno už nekdo používá!" };
-    }
-
-    // hashovani pres bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const existingUser = await userByName(name);
-
-    if (existingUser) {
-        return { error: "Jméno už někdo používá!" };
     } else {
-        await db.user.create({
-            data: {
-                password: hashedPassword,
-                name,
-                email,
-            },
-        });
-    }
+        const { name, password, email } = values;
 
-    return { success: "User created!" };
+        const existingEmail = await userByEmail(email);
+
+        if (existingEmail) {
+            return { error: "Email is already used!" };
+        } else {
+            const existingName = await userByName(name);
+
+            if (existingName) {
+                return { error: "Username is being used!!" };
+            } else {
+
+                const hashedPassword = await bcrypt.hash(password, 10);
+                try {
+                    await db.user.create({
+                        data: {
+                            password: hashedPassword,
+                            name,
+                            email,
+                        },
+                    });
+                } catch (error) {
+                    return { error: "Something happend" };
+                }
+            }
+        }
+    }
 };

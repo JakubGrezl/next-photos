@@ -10,7 +10,7 @@ export const login = async (values: z.infer<typeof UserSchema>) => {
     const validatedFields = UserSchema.safeParse(values);
 
     if (!validatedFields.success) {
-        return { error: "Invalid fields!" };
+        return { message: "Invalid fields!" };
     }
 
     const { email, password } = validatedFields.data;
