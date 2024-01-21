@@ -6,6 +6,7 @@ import { useState } from "react";
 import { UserSchemaRegister } from "@/schema";
 import { useForm } from "react-hook-form";
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { register } from "@/actions/register";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,8 @@ import { cn } from "@/lib/utils";
 export default async function Form() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const router = useRouter();
   const form = useForm<z.infer<typeof UserSchemaRegister>>({
     resolver: zodResolver(UserSchemaRegister),
     defaultValues: {
@@ -24,10 +27,18 @@ export default async function Form() {
   });
 
   const onSubmit = (values: z.infer<typeof UserSchemaRegister>) => {
+    setError("");
+    setSuccess("");
     startTransition(() => {
       register(values).then((data) => {
         if (data?.error) {
           setError(data.error);
+        }
+        if (data?.success) {
+          setSuccess(data.success + ", please wait for redirect");
+          setTimeout(() => {
+            router.push("/profile");
+          }, 3000);
         }
       });
     });
@@ -37,7 +48,8 @@ export default async function Form() {
     <main>
       <div className="form-wrapper centered-from-header">
         <h1>Register</h1>
-        {error && <p className="error">{error}</p>}
+        {error && <p className="error form-annoucment">{error}</p>}
+        {success && <p className="success form-annoucment">{success}</p>}
 
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className={cn({ "input-wrapper": true, disabled: isPending })}>

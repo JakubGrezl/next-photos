@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const UserSchema = z.object({
     email: z.string().email({ message: "Zadej email!" }),
-    password: z.string().min(1, { message: "Zadej heslo!" }),
+    password: z.string().min(4, { message: "Zadej heslo!" }),
 });
 
 export const UserSchemaRegister = UserSchema.extend({
@@ -10,4 +10,4 @@ export const UserSchemaRegister = UserSchema.extend({
     email: z.string().email({ message: "Zadej email!" }),
     password: z.string().min(1, { message: "Zadej heslo!" }),
     repeatPassword: z.string()
-})
+}) 

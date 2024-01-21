@@ -1,3 +1,4 @@
+import "@/styles/main-page.css";
 import dynamic from "next/dynamic";
 import { promises as fs } from "fs";
 import path from "path";
@@ -14,7 +15,7 @@ export default async function Home() {
   const imageFilenames = await fs.readdir(imageDirectory);
 
   return (
-    <div>
+    <div className="main-page-photos-wrapper">
       <Photos images={imageFilenames} />
     </div>
   );

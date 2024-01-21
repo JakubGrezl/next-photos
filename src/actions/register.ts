@@ -15,7 +15,7 @@ export const register = async (values: z.infer<typeof UserSchemaRegister>) => {
     if (!validatedFields.success) {
         return { error: "Invalid fields!" };
     } else {
-        const { name, password, email } = values;
+        const { name, password, email, repeatPassword } = values;
 
         const existingEmail = await userByEmail(email);
 
@@ -28,18 +28,25 @@ export const register = async (values: z.infer<typeof UserSchemaRegister>) => {
                 return { error: "Username is being used!!" };
             } else {
 
-                const hashedPassword = await bcrypt.hash(password, 10);
-                try {
-                    await db.user.create({
-                        data: {
-                            password: hashedPassword,
-                            name,
-                            email,
-                        },
-                    });
-                } catch (error) {
-                    return { error: "Something happend" };
+                if (password != repeatPassword) {
+                    return { error: "Passwords must match!" };
+                } else {
+
+                    const hashedPassword = await bcrypt.hash(password, 10);
+                    try {
+                        await db.user.create({
+                            data: {
+                                password: hashedPassword,
+                                name,
+                                email,
+                            },
+                        });
+                        return { success: "Register successfully" };
+                    } catch (error) {
+                        return { error: "Something happend" };
+                    }
                 }
+
             }
         }
     }

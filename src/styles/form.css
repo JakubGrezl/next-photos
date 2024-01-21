@@ -75,11 +75,17 @@
     font-weight: 800;
 }
 
-.error {
+.form-annoucment {
     text-align: center;
-    color: red;
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
+}
 
+.error {
+    color: red; 
+}
+
+.success {
+    color: green;
 }
