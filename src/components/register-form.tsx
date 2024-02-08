@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { register } from "@/actions/register";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export default async function Form() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
+  const session = useSession();
   const form = useForm<z.infer<typeof UserSchemaRegister>>({
     resolver: zodResolver(UserSchemaRegister),
     defaultValues: {
@@ -50,7 +52,6 @@ export default async function Form() {
         <h1>Register</h1>
         {error && <p className="error form-annoucment">{error}</p>}
         {success && <p className="success form-annoucment">{success}</p>}
-
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className={cn({ "input-wrapper": true, disabled: isPending })}>
             <label htmlFor="name">Username</label>

@@ -12,7 +12,6 @@ export const login = async (values: z.infer<typeof UserSchema>) => {
 
     if (!validatedFields.success) {
         console.log(validatedFields.error)
-
     } else {
         const { email, password } = validatedFields.data;
 
