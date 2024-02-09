@@ -1,7 +1,14 @@
 import "@/styles/photos-wrapper.css";
 import Image from "next/image";
+import { photosLoad } from "@/actions/loadPhotos";
 
-const Photos = ({ images }: { images: Array<string> }) => {
+const Photos = async () => {
+  const images = await photosLoad();
+
+  if (!images) {
+    return <div>No photos found</div>;
+  }
+
   return (
     <div className="photos-wrapper">
       {images.map((el: string) => (
