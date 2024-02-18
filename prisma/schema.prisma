@@ -19,6 +19,7 @@ model User {
     Comment    Comment[]
     album      Album?     @relation(fields: [albumId], references: [id])
     albumId    String?
+    Photo      Photo[]
 }
 
 model Photo {
@@ -28,6 +29,8 @@ model Photo {
     createdAt DateTime  @default(now())
     Album     Album?    @relation(fields: [albumId], references: [id])
     albumId   String?
+    user      User      @relation(fields: [userId], references: [id])
+    userId    String
     Comment   Comment[]
     Metadata  Metadata?
 }

@@ -11,3 +11,7 @@ export const db = globalThis.prisma || new PrismaClient();
 
 // preventuje opakovanemu tvoreni jedinacka
 if (process.env.NODE_ENV !== 'production') globalThis.prisma = db;
+
+export function getAllUsers() {
+    return db.user.findMany();
+}

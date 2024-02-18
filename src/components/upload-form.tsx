@@ -9,33 +9,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 
-const Form = () => {
+const Form = (values: { onClose: any }) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof FileUpload>>({
     resolver: zodResolver(FileUpload),
   });
-
-  /*
-
-  const onSubmit = async (values: z.infer<typeof FileUpload>) => {
-    const file = values.file as File;
-
-    console.log(file);
-
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-    values.buffer = buffer;
-
-    console.log(values.buffer);
-
-    startTransition(async () => {
-      upload(values);
-    });
-  };
-
-  */
 
   async function onSubmit(formData: FormData) {
     const file = formData.get("file");
@@ -61,6 +41,7 @@ const Form = () => {
         buffer: buffer as Uint8Array,
         type: type as string,
       });
+      values.onClose();
     });
   }
 
@@ -71,25 +52,11 @@ const Form = () => {
       <form action={onSubmit}>
         <div className={cn({ "input-wrapper": true, disabled: isPending })}>
           <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            type="text"
-            id="title"
-            disabled={isPending}
-            // spreading => atributy se přidají do input
-            // {...form.register("title")}
-          />
+          <input name="title" type="text" id="title" disabled={isPending} />
         </div>
         <div className={cn({ "input-wrapper": true, disabled: isPending })}>
           <label htmlFor="file">File</label>
-          <input
-            name="file"
-            type="file"
-            id="file"
-            disabled={isPending}
-            // spreading => atributy se přidají do input
-            // {...form.register("file")}
-          />
+          <input name="file" type="file" id="file" disabled={isPending} />
         </div>
         <input
           type="submit"

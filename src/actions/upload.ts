@@ -2,13 +2,14 @@
 
 import path from 'path';
 import { db } from "@/lib/db";
-import { currentUser, getUserID } from "@/lib/auth";
 import fs from 'fs'
+import { currentUser } from "@/lib/auth"
 
 export const upload = async (values: { title: string, buffer: Uint8Array, type: string }) => {
-
     const { title, type } = values;
-    const userID = await getUserID();
+    const user = await currentUser();
+
+    const userID = user?.id
 
     if (!userID) {
         throw new Error("User not found");
@@ -28,24 +29,38 @@ export const upload = async (values: { title: string, buffer: Uint8Array, type: 
         throw new Error("Failed to create user directory");
     }
 
-    const extension = type.split('/')[1];
-    const filepath = path.join(`${userID.toString()}/${title}.${extension}`);
-
-    // Save the file
+    // Initially create the photo record without the file path
+    let photo;
     try {
-        await db.photo.create({
+        photo = await db.photo.create({
             data: {
                 title: title,
-                path: filepath
+                userId: userID, // Assuming there's a relation to a user
+                path: "", // Temporarily empty
             }
         });
     } catch (error: any) {
         throw new Error(error.message);
     }
 
+    const extension = type.split('/')[1];
+    const filename = `${photo.id}.${extension}`; // Use the generated ID as the file name
+    const filepath = path.join(userID.toString(), filename);
+
+    // Update the record with the file path
+    try {
+        await db.photo.update({
+            where: { id: photo.id },
+            data: { path: filepath }
+        });
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+
+    // Save the file with the new filename
     try {
         const buffer = Buffer.from(values.buffer);
-        fs.writeFileSync('public/uploads/' + filepath, buffer);
+        fs.writeFileSync(path.join('public/uploads/', filepath), buffer);
     } catch (error: any) {
         throw new Error(error.message);
     }
