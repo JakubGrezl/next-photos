@@ -17,7 +17,7 @@ export default function Profile() {
               jakub.grezl@outlook.cz
             </ProfileCard>
             <ProfileCard informationType="Photos taken">69</ProfileCard>
-            <ProfileCard informationType="Upload photo" button>
+            <ProfileCard informationType="Upload photo">
               <UploadModal />
             </ProfileCard>
           </div>
