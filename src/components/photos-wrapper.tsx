@@ -1,11 +1,33 @@
+"use client";
+
 import "@/styles/photos-wrapper.css";
 import Image from "next/image";
-import { photosLoad } from "@/actions/loadPhotos";
+import { photosLoad, userPhotosLoad } from "@/actions/loadPhotos";
+import { useState, useEffect } from "react";
 
-const Photos = async () => {
-  const images = await photosLoad();
+interface PhotosProps {
+  uuid?: string;
+}
 
-  if (!images) {
+const Photos = (props: PhotosProps) => {
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      let loadedImages = await photosLoad();
+      if (props.uuid) {
+        loadedImages = await userPhotosLoad(props.uuid);
+      }
+
+      if (loadedImages) {
+        setImages(loadedImages);
+      }
+    };
+
+    loadImages();
+  }, [props.uuid]);
+
+  if (images.length === 0) {
     return <div>No photos found</div>;
   }
 
@@ -16,7 +38,7 @@ const Photos = async () => {
           className="photo"
           width={300}
           height={300}
-          alt={"alt"}
+          alt={"Photo"}
           src={`/uploads/${el}`}
           key={el}
         />

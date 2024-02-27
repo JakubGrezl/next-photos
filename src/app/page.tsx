@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
@@ -9,7 +8,7 @@ const Photos = dynamic(() => import("@/components/photos-wrapper"), {
 export default function Home() {
   return (
     <div className="main-page-photos-wrapper">
-      <Photos/> 
+      <Photos />
     </div>
   );
 }
