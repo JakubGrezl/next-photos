@@ -20,7 +20,18 @@ export const upload = async (values: { title: string, buffer: Uint8Array, type: 
     }
 
     // Create a directory for the user if it doesn't exist
-    const userDir = path.join('public/uploads/', userID.toString());
+    const uploadDir = 'public/uploads/';
+    try {
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+    } catch (error) {
+        throw new Error("Failed to create uploads directory");
+    }
+
+
+    // Create a directory for the user if it doesn't exist
+    const userDir = path.join(uploadDir, userID.toString());
     try {
         if (!fs.existsSync(userDir)) {
             fs.mkdirSync(userDir, { recursive: true });
