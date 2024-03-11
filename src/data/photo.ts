@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/lib/db";
 
 export const getPhotos = async () => {
@@ -21,3 +23,20 @@ export const getUserPhotos = async (uuid: string) => {
         throw err;
     }
 };
+
+
+export const numberUserPhotos = async (uuid: string) => {
+    try {
+        return await db.photo.groupBy({
+            by: ['userId'],
+            where: {
+                userId: uuid
+            },
+            _count: true,
+        });
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
