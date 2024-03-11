@@ -10,14 +10,12 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { register } from "@/actions/register";
 import { cn } from "@/lib/utils";
-import { useSession } from "next-auth/react";
 
 export default async function Form() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
-  const session = useSession();
   const form = useForm<z.infer<typeof UserSchemaRegister>>({
     resolver: zodResolver(UserSchemaRegister),
     defaultValues: {

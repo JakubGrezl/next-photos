@@ -4,59 +4,79 @@ import "@/styles/form.css";
 import { useTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FileUpload } from "@/schema";
-import { upload } from "@/actions/upload";
+import { r2upload } from "@/actions/r2-upload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 
-const Form = (values: { onClose: any }) => {
+const Form = (onClose?: any) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [file, setFile] = useState<File | undefined>(undefined);
 
   const form = useForm<z.infer<typeof FileUpload>>({
     resolver: zodResolver(FileUpload),
+    defaultValues: {
+      title: "no title:(",
+    },
   });
 
-  async function onSubmit(formData: FormData) {
-    const file = formData.get("file");
-    const title = formData.get("title");
+  async function onSubmit(values: z.infer<typeof FileUpload>) {
+    const formData = new FormData();
+    formData.append("title", values.title!);
+    formData.append("file", file!);
 
-    if (!(file instanceof File)) {
-      setError("No file selected");
-      return;
-    }
-
-    if (!title) {
-      setError("No title");
-      return;
-    }
-
-    const type = file.type;
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-
-    startTransition(async () => {
-      upload({
-        title: title as string,
-        buffer: buffer as Uint8Array,
-        type: type as string,
+    startTransition(() => {
+      r2upload(formData).then((data) => {
+        if (data?.error) {
+          setError(data.error);
+        }
+        if (data?.success) {
+          setSuccess(data.success);
+          if (onClose) {
+            setTimeout(onClose, 5000);
+          }
+        }
       });
-      values.onClose();
     });
   }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files![0]);
+  };
 
   return (
     <div className="form-wrapper centered-from-header">
       <h1>Upload</h1>
-      {error && <p className="error">{error}</p>}
-      <form action={onSubmit}>
+      {error && <p className="error form-annoucment">{error}</p>}
+      {form.formState.errors.file?.message && (
+        <p className="error form-annoucment">
+          {form.formState.errors.file?.message.toString()}
+        </p>
+      )}
+      {success && <p className="success form-annoucment">{success}</p>}
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className={cn({ "input-wrapper": true, disabled: isPending })}>
           <label htmlFor="title">Title</label>
-          <input name="title" type="text" id="title" disabled={isPending} />
+          <input
+            type="text"
+            id="title"
+            disabled={isPending}
+            {...form.register("title")}
+          />
         </div>
         <div className={cn({ "input-wrapper": true, disabled: isPending })}>
           <label htmlFor="file">File</label>
-          <input name="file" type="file" id="file" disabled={isPending} />
+          <input
+            type="file"
+            accept="image/*"
+            id="file"
+            required
+            disabled={isPending}
+            onChange={handleFileChange} // Update the file state
+            // {...form.register("file")}
+          />
         </div>
         <input
           type="submit"

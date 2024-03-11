@@ -39,7 +39,7 @@ const Photos = (props: PhotosProps) => {
           width={300}
           height={300}
           alt={"Photo"}
-          src={`/uploads/${el}`}
+          src={el}
           key={el}
         />
       ))}

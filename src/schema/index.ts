@@ -1,6 +1,16 @@
-import { any, z } from "zod";
-const MAX_FILE_SIZE = 100000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+import { z } from "zod";
+const MAX_FILE_SIZE : number = 100;
+const ACCEPTED_IMAGE_TYPES : string[] = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+function checkFileType(file: File) { // file type checking
+    if (file?.name) {
+        const fileType = file.name.split(".").pop();
+        if (ACCEPTED_IMAGE_TYPES.includes(fileType!)) return true; 
+    }
+    return false;
+}
+
+
 
 export const UserSchema = z.object({
     email: z.string().email({ message: "Zadej email!" }),
@@ -14,18 +24,10 @@ export const UserSchemaRegister = UserSchema.extend({
     repeatPassword: z.string()
 })
 
+
 export const FileUpload = z.object({
-    title: z.string().max(255).min(1),
-    file: z
-        .any()
-        .refine((files) => files?.length == 1, "Image is required.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-        .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-            ".jpg, .jpeg, .png and .webp files are accepted."
-        ),
-    buffer: z.any()
-});
-
-
-// nevim proc ale zod validace neumozni ani poslat ten formular, kdyz ty veci nejsou potvrzeny
+    title: z.string().optional(),
+    file: z.any()
+        .refine((file) => file.size < MAX_FILE_SIZE, "Max size is 3MB.") // file size validation
+        .refine((file) => checkFileType(file), "Only .jpg, .gif, .png formats are supported."),
+})

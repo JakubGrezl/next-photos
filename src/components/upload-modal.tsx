@@ -10,7 +10,11 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import Form from "@/components/upload-form";
+import dynamic from "next/dynamic";
+
+const Form = dynamic(() => import("@/components/upload-form"), {
+  ssr: false,
+});
 
 export default function UploadModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
