@@ -11,6 +11,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 400px;
+    flex-shrink: 0;
     padding: 50px;
     margin: 50px;
     background-color: white;

@@ -5,7 +5,6 @@ interface ProfileInformation {
   informationType: string;
   children: React.ReactNode;
 }
-
 export default async function ProfileCard(props: ProfileInformation) {
   return (
     <div className="profile-card-wrapper">
