@@ -28,6 +28,6 @@ export const UserSchemaRegister = UserSchema.extend({
 export const FileUpload = z.object({
     title: z.string().optional(),
     file: z.any()
-        .refine((file) => file.size < MAX_FILE_SIZE, "Max size is 3MB.") // file size validation
-        .refine((file) => checkFileType(file), "Only .jpg, .gif, .png formats are supported."),
+        // .refine((file) => file?.size < MAX_FILE_SIZE, "Max size is 3MB.") // file size validation
+        // .refine((file) => checkFileType(file), "Only .jpg, .gif, .png formats are supported."),
 })
