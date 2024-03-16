@@ -1,6 +1,6 @@
 "use client";
 
-import { TextCard, ButtonCard } from "@/components/cards";
+import { TextCard } from "@/components/cards";
 import UploadModal from "@/components/upload-modal";
 import {
   useCurrentUser,
@@ -31,9 +31,7 @@ const ProfilePage = () => {
           <TextCard title="Name">{user?.name ? user?.name : ""}</TextCard>
           <TextCard title="Email">{user?.email ? user?.email : ""}</TextCard>
           <TextCard title="Photos uploaded">{numberPhotos}</TextCard>
-          <ButtonCard title="Upload photo">
-            <UploadModal />
-          </ButtonCard>
+          <UploadModal />
         </div>
       </div>
       <Photos uuid={user!.id} />

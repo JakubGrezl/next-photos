@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 
-const Form = (onClose?: any) => {
+const Form = (onClose?: () => void) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -35,7 +35,10 @@ const Form = (onClose?: any) => {
         if (data?.success) {
           setSuccess(data.success);
           if (onClose) {
-            setTimeout(onClose, 5000);
+            setTimeout(() => {
+              onClose;
+              window.location.reload();
+            }, 5000);
           }
         }
       });
