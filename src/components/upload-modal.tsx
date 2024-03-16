@@ -6,7 +6,6 @@ import {
   Modal,
   ModalContent,
   ModalBody,
-  Button,
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
