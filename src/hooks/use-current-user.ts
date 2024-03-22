@@ -12,6 +12,11 @@ export const currentUserPhotosCount = async () => {
     const user = useCurrentUser();
     const number = await numberUserPhotos(user!.id);
     if (number) {
-        return number[0]._count;
+        if (number[0]._count) {
+          return number[0]._count;
+        } else {
+
+          return 0;
+        }
     }
 }
