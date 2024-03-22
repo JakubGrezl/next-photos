@@ -5,8 +5,15 @@ import {
     DeleteObjectCommand,
     CopyObjectCommand,
   } from '@aws-sdk/client-s3';
-  import { StorageListResponse, generateStorageId } from '.';
-  
+  import { generateNanoid } from '@/lib/utils';
+type StorageListResponse = {
+  url: string
+  uploadedAt?: Date
+}[];
+
+const generateStorageId = () => generateNanoid(16);
+
+
   const CLOUDFLARE_R2_BUCKET =
     process.env.NEXT_PUBLIC_CLOUDFLARE_R2_BUCKET ?? '';
   const CLOUDFLARE_R2_ACCOUNT_ID =
