@@ -9,14 +9,19 @@ import {
 import "@/styles/profile.css";
 
 import dynamic from "next/dynamic";
+import { useState } from "react";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
 });
 
 const ProfilePage = () => {
+  const [numberPhotos, setNumberPhotos] = useState<number>(1);
+
   const user = useCurrentUser();
-  const numberPhotos = currentUserPhotosCount();
+  currentUserPhotosCount().then((number) => {
+    if (number) setNumberPhotos(number);
+  });
 
   return (
     <main className="profile-page-wrapper">
