@@ -11,6 +11,21 @@ export const getPhotos = async () => {
     }
 };
 
+export const getPhoto = async (uuid : string) => {
+    try {
+        const photo = await db.photo.findMany({
+            where: {
+                id: uuid
+            }
+        });
+        return photo[0];
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
+
 export const getUserPhotos = async (uuid: string) => {
     try {
         return await db.photo.findMany({
