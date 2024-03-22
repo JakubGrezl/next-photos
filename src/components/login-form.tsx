@@ -42,7 +42,6 @@ const Form = () => {
             type="email"
             id="email"
             disabled={isPending}
-            // spreading => atributy se přidají do input
             {...form.register("email")}
           />
         </div>
@@ -52,7 +51,6 @@ const Form = () => {
             type="password"
             id="password"
             disabled={isPending}
-            // spreading => atributy se přidají do inputu
             {...form.register("password")}
           />
         </div>

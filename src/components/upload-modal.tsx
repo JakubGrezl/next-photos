@@ -6,19 +6,22 @@ import {
   Modal,
   ModalContent,
   ModalBody,
-  Button,
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
 import Form from "@/components/upload-form";
+
+import "@/styles/card.css";
 
 export default function UploadModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
+      <button onClick={onOpen} className="button">
+        Open Modal
+      </button>
       <NextUIProvider>
-        <Button onPress={onOpen}>Open Modal</Button>
         <Modal
           backdrop={"blur"}
           isOpen={isOpen}

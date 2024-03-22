@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 type coordinates = {
   latitude: number;
@@ -17,22 +18,9 @@ export function ChangeView({ coords }: { coords: coordinates }) {
 export default function Map() {
   const [center, setCenter] = useState<coordinates>();
 
-  useEffect(() => {
-    // if ("geolocation" in navigator) {
-    //   try {
-    //     navigator.geolocation.getCurrentPosition(({ coords }) => {
-    //       setCenter(coords);
-    //     });
-    //   } catch (e) {
-    //     console.log(e);
-    //     let coords = { latitude: 49.728, longitude: 16.068 };
-    //     setCenter(coords);
-    //   }
-    // } else {
-    //   let coords = { latitude: 49.728, longitude: 16.068 };
-    //   setCenter(coords);
-    // }
+  const user = useCurrentUser();
 
+  useEffect(() => {
     navigator.geolocation.watchPosition(
       function (position) {
         setCenter(position.coords);

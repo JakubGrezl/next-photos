@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# .env configuration
+
+```conf
+NEXT_PUBLIC_CLOUDFLARE_R2_ACCOUNT_ID=
+NEXT_PUBLIC_CLOUDFLARE_R2_BUCKET=
+NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_DOMAIN=
+CLOUDFLARE_R2_ACCESS_KEY=
+CLOUDFLARE_R2_SECRET_ACCESS_KEY=
+DATABASE_URL=
+NEXTAUTH_SECRET=
+```
