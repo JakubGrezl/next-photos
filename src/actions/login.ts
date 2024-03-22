@@ -16,7 +16,6 @@ export const login = async (values: z.infer<typeof UserSchema>) => {
         const { email, password } = validatedFields.data;
 
         try {
-            // vola authorization v auth.config.ts
             await signIn("credentials", {
                 email,
                 password,

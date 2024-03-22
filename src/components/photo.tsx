@@ -3,9 +3,11 @@ import style from "@/styles/photo-page.module.scss";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { loadPhoto } from "@/hooks/load-photos";
+import { loadExif } from "@/hooks/load-exif";
 import { useEffect, useState } from "react";
 import { Photo } from "@/components/photos-wrapper";
 import { useSearchParams } from "next/navigation";
+
 import Prisma from "@prisma/client";
 
 // icons import
@@ -46,6 +48,8 @@ export default function Photo() {
       load().then((photo) => {
         setPhoto(photo);
       });
+
+
     }, [id]);
 
   return (

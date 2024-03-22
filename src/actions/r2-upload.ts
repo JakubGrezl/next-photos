@@ -69,6 +69,8 @@ export const r2upload = async (values: FormData) => {
     const buffer = Buffer.from(await file.arrayBuffer());
     const filetype = file.type;
     
+
+
     try {
       await uploadToR2(filename, buffer, R2client(), filetype);
       await db.photo.update({
