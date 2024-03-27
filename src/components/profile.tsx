@@ -2,11 +2,9 @@
 
 import { TextCard } from "@/components/cards";
 import UploadModal from "@/components/upload-modal";
-import {
-  useCurrentUser,
-  currentUserPhotosCount,
-} from "@/hooks/use-current-user";
+import { currentUserPhotosCount } from "@/hooks/use-current-user";
 import "@/styles/profile.css";
+import { useSession } from "next-auth/react";
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -18,10 +16,12 @@ const Photos = dynamic(() => import("@/components/photos-wrapper"), {
 const ProfilePage = () => {
   const [numberPhotos, setNumberPhotos] = useState<number>(1);
 
-  const user = useCurrentUser();
+  const session = useSession();
+
+  const user = session.data?.user;
 
   useEffect(() => {
-    currentUserPhotosCount().then((number) => {
+    currentUserPhotosCount(user).then((number) => {
       if (number) setNumberPhotos(number);
     });
   });

@@ -8,8 +8,7 @@ export const useCurrentUser = () => {
   return session.data?.user;
 };
 
-export const currentUserPhotosCount = async () => {
-    const user = useCurrentUser();
+export const currentUserPhotosCount = async (user : any) => {
     const number = await numberUserPhotos(user!.id);
     if (number) {
         if (number[0]._count) {
