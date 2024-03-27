@@ -1,5 +1,6 @@
 export const publicRouters = [
-    "/"
+    "/",
+    "/photo",
 ];
 
 export const authRoutes = [
