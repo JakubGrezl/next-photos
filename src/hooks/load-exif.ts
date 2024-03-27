@@ -52,13 +52,17 @@ export interface ExifData {
 export const loadExif = async (id : string) => {
     const photo = await photoLoad(id);
     
+    console.log("fetching");
     const response = await axios.get(photo.path,  { responseType: 'arraybuffer' })
     const buffer = Buffer.from(response.data, "utf-8")
     
     
     if (buffer) {
         const exifData : ExifData = await exifr.parse(buffer)
+        console.log("exif data got");
+        
         const data = uploadExifData(id, exifData);
+        console.log("uploaded data");
         return data;
     } 
 }
