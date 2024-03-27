@@ -83,7 +83,7 @@ const Form = (onClose?: any) => {
         </div>
         <input
           type="submit"
-          className="submit-button"
+          className={cn({ "submit-button": true, disabled: isPending })}
           value="Upload"
           disabled={isPending}
         />
