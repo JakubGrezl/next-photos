@@ -53,7 +53,7 @@ export default function Photo() {
   const handleClick = () => {
     if (id)
       loadExif(id).then((data) => {
-        setExif(data);
+        setExif(data!);
       });
   };
 

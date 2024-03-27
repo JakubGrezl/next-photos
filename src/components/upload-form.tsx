@@ -77,8 +77,7 @@ const Form = (onClose?: any) => {
             id="file"
             required
             disabled={isPending}
-            onChange={handleFileChange} // Update the file state
-            // {...form.register("file")}
+            onChange={handleFileChange}
           />
         </div>
         <input
