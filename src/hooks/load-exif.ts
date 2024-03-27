@@ -3,6 +3,9 @@
 import { photoLoad } from "@/actions/loadPhotos";
 import exifr from 'exifr';
 import axios from 'axios';
+import { db } from "@/lib/db";
+import { uploadExifData } from "@/actions/uploadExifData";
+
 
 export interface ExifData {
     Make: string;
@@ -55,7 +58,8 @@ export const loadExif = async (id : string) => {
     
     if (buffer) {
         const exifData : ExifData = await exifr.parse(buffer)
-        return exifData;
+        const data = uploadExifData(id, exifData);
+        return data;
     } 
 }
 
@@ -64,4 +68,15 @@ export const loadExifBuffer = async (buffer? : Buffer) => {
         const exifData : ExifData = await exifr.parse(buffer)
         return exifData;
     } 
+}
+
+export const loadExifDatabase = async (id : string) => {
+    const metadata = await db.metadata.findMany({
+        where: {
+            photoId: id
+        }
+    })
+    if (metadata) {
+        return metadata[0];
+    }
 }

@@ -9,7 +9,7 @@ import {
 import "@/styles/profile.css";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
@@ -19,8 +19,11 @@ const ProfilePage = () => {
   const [numberPhotos, setNumberPhotos] = useState<number>(1);
 
   const user = useCurrentUser();
-  currentUserPhotosCount().then((number) => {
-    if (number) setNumberPhotos(number);
+
+  useEffect(() => {
+    currentUserPhotosCount().then((number) => {
+      if (number) setNumberPhotos(number);
+    });
   });
 
   return (

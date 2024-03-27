@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 import { getUserID } from "@/lib/auth"
+import { loadExifBuffer } from "@/hooks/load-exif";
+import { uploadExifData } from "./uploadExifData";
 
 const CLOUDFLARE_R2_BUCKET =
   process.env.NEXT_PUBLIC_CLOUDFLARE_R2_BUCKET ?? '';
@@ -67,6 +69,12 @@ export const r2upload = async (values: FormData) => {
     const filename = photo.id;
     const filepath = `${CLOUDFLARE_R2_BASE_URL_PUBLIC}/${filename}`;
     const buffer = Buffer.from(await file.arrayBuffer());
+    const exif = await loadExifBuffer(buffer);
+    if (exif) {
+      uploadExifData(photo.id, exif);
+    }
+
+
     const filetype = file.type;
     
 
@@ -76,6 +84,7 @@ export const r2upload = async (values: FormData) => {
       await db.photo.update({
         where: { id: photo.id },
         data: { path: filepath }
+      
     });
       revalidatePath("/");
       return { success: "Photo Uploaded!" };

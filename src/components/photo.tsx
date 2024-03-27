@@ -3,7 +3,7 @@ import style from "@/styles/photo-page.module.scss";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { loadPhoto } from "@/hooks/load-photos";
-import { loadExif, ExifData } from "@/hooks/load-exif";
+import { loadExif, loadExifDatabase } from "@/hooks/load-exif";
 import { useEffect, useState } from "react";
 import { Photo } from "@/components/photos-wrapper";
 import { useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ export default function Photo() {
   const profilePage: boolean =
     searchParams.get("profilePage") === "true" ? true : false;
   const [photo, setPhoto] = useState<Prisma.Photo>();
-  const [exif, setExif] = useState<ExifData>();
+  const [exif, setExif] = useState<Prisma.Metadata>();
 
   const reroute = () => {
     if (profilePage) {
@@ -40,19 +40,20 @@ export default function Photo() {
     useEffect(() => {
       const load = async () => {
         const photo = await loadPhoto(id);
-        return photo;
+        const exif = await loadExifDatabase(id);
+        return { photo, exif };
       };
 
-      load().then((photo) => {
-        setPhoto(photo);
+      load().then((data) => {
+        setPhoto(data.photo);
+        setExif(data.exif);
       });
     }, [id]);
 
   const handleClick = () => {
     if (id)
-      loadExif(id).then((exif) => {
-        console.log(exif);
-        setExif(exif);
+      loadExif(id).then((data) => {
+        setExif(data);
       });
   };
 
@@ -61,52 +62,54 @@ export default function Photo() {
       return (
         <>
           <p>
-            <span>CAMERA: </span> {exif.Model}
+            <span>CAMERA: </span> {exif.camera}
           </p>
           <p>
-            <span>LENS: </span> {exif.LensModel}
+            <span>LENS: </span> {exif.lens}
           </p>
           <p>
-            <span>EDITED IN: </span> {exif.Software}
+            <span>EDITED IN: </span> {exif.editedIn}
           </p>
           <p>
             <span>CREATED AT: </span>{" "}
-            {exif.CreateDate.getDay() +
-              "." +
-              exif.CreateDate.getMonth() +
-              "." +
-              exif.CreateDate.getFullYear() +
-              " " +
-              exif.CreateDate.getHours() +
-              ":" +
-              exif.CreateDate.getMinutes() +
-              ":" +
-              exif.CreateDate.getSeconds()}
+            {exif.createdAt
+              ? exif.createdAt.getDay() +
+                "." +
+                exif.createdAt.getMonth() +
+                "." +
+                exif.createdAt.getFullYear() +
+                " " +
+                exif.createdAt.getHours() +
+                ":" +
+                exif.createdAt.getMinutes() +
+                ":" +
+                exif.createdAt.getSeconds()
+              : null}
           </p>
           <p>
-            <span>EXPOSURE: </span> {formatExposureTime(exif.ExposureTime)}
+            <span>EXPOSURE: </span> 1/{exif.exposure}
           </p>
           <p>
-            <span>ISO: </span> {exif.ISO}
+            <span>ISO: </span> {exif.iso}
           </p>
           <p>
             <span>APERTURE: </span>
-            {formatAperture(exif.FNumber)}
+            {exif.aperture ? formatAperture(exif.aperture) : null}
           </p>
 
           <p>
             <span>FOCAL LENGHT: </span>
-            {formatFocalLength(exif.FocalLength)}
+            {exif.focalLength ? formatFocalLength(exif.focalLength) : null}
           </p>
 
           <p>
             <span>FLASH STATUS: </span>
-            {exif.Flash}
+            {exif.flash}
           </p>
 
           <p>
             <span>WHITE BALANCE: </span>
-            {exif.WhiteBalance}
+            {exif.whiteBalance}
           </p>
         </>
       );
@@ -163,10 +166,3 @@ const formatFocalLength = (focalLength?: number) =>
 
 const formatAperture = (aperture?: number) =>
   aperture ? `ƒ/${aperture}` : undefined;
-
-const formatExposureTime = (exposureTime = 0) =>
-  exposureTime > 0
-    ? exposureTime < 1
-      ? `1/${Math.floor(1 / exposureTime)}s`
-      : `${exposureTime}s`
-    : undefined;
