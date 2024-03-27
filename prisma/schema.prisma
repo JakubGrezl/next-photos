@@ -36,14 +36,23 @@ model Photo {
 }
 
 model Metadata {
-    id        String @id @default(uuid())
-    photo     Photo  @relation(fields: [photoId], references: [id])
-    photoId   String @unique
-    width     Int
-    height    Int
-    latitude  Float
-    longitude Float
-    fileType  String
+    id           String    @id @default(uuid())
+    photo        Photo     @relation(fields: [photoId], references: [id])
+    photoId      String    @unique
+    width        Int
+    height       Int
+    latitude     Float?
+    longitude    Float?
+    camera       String?
+    lens         String?
+    editedIn     String?
+    createdAt    DateTime?
+    exposure     Int?
+    iso          Int?
+    aperture     Float?
+    focalLength  Int?
+    flash        String?
+    whiteBalance String?
 }
 
 model Album {
