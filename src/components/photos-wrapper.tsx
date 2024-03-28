@@ -38,7 +38,7 @@ const Photos = (props: PhotosProps) => {
   }
 
   return (
-    <div className="photos-wrapper">
+    <div className="photos-wrapper overflow-auto">
       {images.map((el: Photo) => (
         <Link
           href={{
