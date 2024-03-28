@@ -7,11 +7,7 @@ const Page = dynamic(() => import("@/components/photo"), {
 });
 
 const Photo = () => {
-  return (
-    <>
-      <Page />
-    </>
-  );
+  return <Page />;
 };
 
 export default Photo;

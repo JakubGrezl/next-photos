@@ -42,7 +42,9 @@ const ProfilePage = () => {
           <UploadModal />
         </div>
       </div>
-      <Photos uuid={user!.id} />
+      <div className="flex max-h-[calc(100vh-64px)] overflow-auto">
+        <Photos uuid={user!.id} />
+      </div>
     </main>
   );
 };

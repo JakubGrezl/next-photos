@@ -11,13 +11,14 @@
     align-items: baseline;
     gap: 20px;
     padding-left: 20px;
+    height: 100vh;
+    position: relative;
 
 
     .photoWrapper {
         display: flex;
         flex-direction: column;
-        width: 50%;
-        align-self: center;
+        max-width: 50%;
     }
 
     .description {

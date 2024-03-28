@@ -116,20 +116,21 @@ export default function Photo() {
   };
 
   return (
-    <main className={style.wrapper}>
+    <main className="flex h-screen p-2 box-border overflow-auto">
       {reroute()}
 
-      <div className={style.photoWrapper}>
+      <div className="w-1/2 p-2">
         <Image
+          className="max-w-full h-auto object-contain"
           alt={photo?.title ? photo.title : "This photo doesnt have any title"}
           src={photo?.path ? photo.path : "/placeholder.png"}
           key={photo?.path}
-          width={4096}
-          height={3112}
+          width={4000}
+          height={4000}
           priority
         />
       </div>
-      <div className={style.description}>
+      <div className="w-1/2">
         <p>
           <span>TITLE: </span>
           {photo?.title ? photo.title : "Undefiend"}
