@@ -14,7 +14,7 @@ const Photos = dynamic(() => import("@/components/photos-wrapper"), {
 });
 
 const ProfilePage = () => {
-  const [numberPhotos, setNumberPhotos] = useState<number>(1);
+  const [numberPhotos, setNumberPhotos] = useState<number>();
 
   const session = useSession();
 
@@ -27,7 +27,7 @@ const ProfilePage = () => {
   });
 
   return (
-    <main className="profile-page-wrapper">
+    <main className="flex flex-row no-nav">
       <div className="wrapper">
         <div className="profilepicture-wrapper">
           <img
@@ -36,13 +36,13 @@ const ProfilePage = () => {
           />
         </div>
         <div className="profileinformation-wrapper">
-          <TextCard title="Name">{user?.name ? user?.name : ""}</TextCard>
-          <TextCard title="Email">{user?.email ? user?.email : ""}</TextCard>
-          <TextCard title="Photos uploaded">{numberPhotos}</TextCard>
+          <TextCard title="Name">{user?.name ?? ""}</TextCard>
+          <TextCard title="Email">{user?.email ?? ""}</TextCard>
+          <TextCard title="Photos uploaded">{numberPhotos ?? 0}</TextCard>
           <UploadModal />
         </div>
       </div>
-      <div className="flex max-h-[calc(100vh-64px)] overflow-auto">
+      <div className="flex no-nav overflow-auto">
         <Photos uuid={user!.id} />
       </div>
     </main>

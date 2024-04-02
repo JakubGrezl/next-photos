@@ -1,6 +1,5 @@
 import Image from "next/image";
 import style from "@/styles/photo-page.module.scss";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { loadPhoto } from "@/hooks/load-photos";
 import { loadExif, loadExifDatabase } from "@/hooks/load-exif";
@@ -10,6 +9,9 @@ import { useSearchParams } from "next/navigation";
 import Prisma from "@prisma/client";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
+import { cn } from "@/lib/utils";
+
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 export default function Photo() {
   const searchParams = useSearchParams();
@@ -50,90 +52,84 @@ export default function Photo() {
       });
     }, [id]);
 
-  const handleClick = () => {
-    if (id)
-      loadExif(id).then((data) => {
-        setExif(data!);
-      });
-  };
-
   const exifDataHTML = () => {
-    if (exif)
-      return (
-        <>
-          <p>
-            <span>CAMERA: </span> {exif.camera}
-          </p>
-          <p>
-            <span>LENS: </span> {exif.lens}
-          </p>
-          <p>
-            <span>EDITED IN: </span> {exif.editedIn}
-          </p>
-          <p>
-            <span>CREATED AT: </span>{" "}
-            {exif.createdAt
-              ? exif.createdAt.getDay() +
-                "." +
-                exif.createdAt.getMonth() +
-                "." +
-                exif.createdAt.getFullYear() +
-                " " +
-                exif.createdAt.getHours() +
-                ":" +
-                exif.createdAt.getMinutes() +
-                ":" +
-                exif.createdAt.getSeconds()
-              : null}
-          </p>
-          <p>
-            <span>EXPOSURE: </span> 1/{exif.exposure}
-          </p>
-          <p>
-            <span>ISO: </span> {exif.iso}
-          </p>
-          <p>
-            <span>APERTURE: </span>
-            {exif.aperture ? formatAperture(exif.aperture) : null}
-          </p>
+    return (
+      <>
+        <p>
+          <span>CAMERA: </span> {exif?.camera ?? "No camera data"}
+        </p>
+        <p>
+          <span>LENS: </span> {exif?.lens ?? "No lens data"}
+        </p>
+        <p>
+          <span>EDITED IN: </span> {exif?.editedIn ?? "No editing data"}
+        </p>
+        <p>
+          <span>CREATED AT: </span>{" "}
+          {exif?.createdAt
+            ? exif.createdAt.getDay() +
+              "." +
+              exif.createdAt.getMonth() +
+              "." +
+              exif.createdAt.getFullYear() +
+              " " +
+              exif.createdAt.getHours() +
+              ":" +
+              exif.createdAt.getMinutes() +
+              ":" +
+              exif.createdAt.getSeconds()
+            : "No upload date data"}
+        </p>
+        <p>
+          <span>EXPOSURE: </span> 1/{exif?.exposure ?? "No exposure data"}
+        </p>
+        <p>
+          <span>ISO: </span> {exif?.iso ?? "No iso data"}
+        </p>
+        <p>
+          <span>APERTURE: </span>
+          {exif?.aperture ? formatAperture(exif.aperture) : "No aperture data"}
+        </p>
 
-          <p>
-            <span>FOCAL LENGHT: </span>
-            {exif.focalLength ? formatFocalLength(exif.focalLength) : null}
-          </p>
+        <p>
+          <span>FOCAL LENGHT: </span>
+          {exif?.focalLength
+            ? formatFocalLength(exif.focalLength)
+            : "No focal length data"}
+        </p>
 
-          <p>
-            <span>FLASH STATUS: </span>
-            {exif.flash}
-          </p>
+        <p>
+          <span>FLASH STATUS: </span>
+          {exif?.flash ?? "No flash data"}
+        </p>
 
-          <p>
-            <span>WHITE BALANCE: </span>
-            {exif.whiteBalance}
-          </p>
-        </>
-      );
+        <p>
+          <span>WHITE BALANCE: </span>
+          {exif?.whiteBalance ?? "No white balance data"}
+        </p>
+      </>
+    );
   };
 
   return (
-    <main className="flex h-screen p-2 box-border overflow-auto">
+    <main className="flex no-nav p-2 box-border overflow-auto">
       {reroute()}
 
-      <div className="w-1/2 p-2">
+      <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
         <Image
-          className="max-w-full h-auto object-contain"
-          alt={photo?.title ? photo.title : "This photo doesnt have any title"}
-          src={photo?.path ? photo.path : "/placeholder.png"}
+          className="max-w-full max-h-full object-contain"
+          alt={photo?.title ?? "This photo doesnt have any title"}
+          src={photo?.path ?? "/placeholder.png"}
           key={photo?.path}
           width={4000}
           height={4000}
           priority
         />
       </div>
-      <div className="w-1/2">
+      <div className={cn("w-1/2", style.description)}>
         <p>
           <span>TITLE: </span>
-          {photo?.title ? photo.title : "Undefiend"}
+          {photo?.title ?? "Undefiend"}
         </p>
         <p>
           <span>UPLOADED AT: </span>
@@ -151,12 +147,14 @@ export default function Photo() {
               photo.createdAt.getSeconds()
             : "Undefiend"}
         </p>
-        <p>
-          <span>PHOTO PATH:</span>
-          {photo?.path ? <Link href={photo?.path}>LOAD</Link> : null}
-        </p>
-        <button onClick={handleClick}>Load exif</button>
         {exif ? exifDataHTML() : null}
+        <p>
+          {photo?.path ? (
+            <Link href={photo?.path}>
+              <InsertLinkIcon />
+            </Link>
+          ) : null}
+        </p>
       </div>
     </main>
   );

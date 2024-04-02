@@ -5,6 +5,7 @@ import Image from "next/image";
 import { photosLoad, userPhotosLoad } from "@/actions/loadPhotos";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface PhotosProps {
   uuid?: string;
@@ -34,11 +35,11 @@ const Photos = (props: PhotosProps) => {
   }, [props.uuid]);
 
   if (images.length === 0) {
-    return <div>No photos found</div>;
+    return <p className="text-4xl self-auto overflow-hidden p-3">Loading</p>;
   }
 
   return (
-    <div className="photos-wrapper p-3 ">
+    <div className="photos-wrapper p-3">
       {images.map((el: Photo) => (
         <Link
           href={{

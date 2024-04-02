@@ -10,6 +10,7 @@
 }
 
 .photo {
+    display: flex;
     z-index: 1;
     width: 200px;
     height: 200px;

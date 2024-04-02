@@ -10,15 +10,15 @@ export const uploadExifData = async (photoId: string, exifData : ExifData) => {
                 photoId: photoId, 
                 width: exifData?.XResolution ?? 0,
                 height: exifData?.YResolution ?? 0,
-                camera: exifData?.Model ?? "Unknown",
-                lens: exifData?.LensModel ?? "Unknown",
-                editedIn: exifData?.Software ?? "Unknown",
-                exposure: formatExposureTime(exifData?.ExposureTime) ?? 0,
-                iso: exifData?.ISO ?? 0,
-                aperture: exifData?.FNumber ?? 0,
-                focalLength: exifData?.FocalLength ?? 0,
-                flash: exifData?.Flash ?? "Unknown",
-                whiteBalance: exifData?.WhiteBalance ?? "Unknown",
+                camera: exifData?.Model ?? null,
+                lens: exifData?.LensModel ?? null,
+                editedIn: exifData?.Software ?? null,
+                exposure: formatExposureTime(exifData?.ExposureTime) ?? null,
+                iso: exifData?.ISO ?? null,
+                aperture: exifData?.FNumber ?? null,
+                focalLength: exifData?.FocalLength ?? null,
+                flash: exifData?.Flash ?? null,
+                whiteBalance: exifData?.WhiteBalance ?? null,
             }
         });
         if (savedDatabase !== undefined) {
@@ -37,6 +37,6 @@ export const uploadExifData = async (photoId: string, exifData : ExifData) => {
 const formatExposureTime = (exposureTime = 0) =>
   exposureTime > 0
     ? exposureTime < 1
-      ? Math.floor(1 / exposureTime)
-      : exposureTime
+      ? "1/" + Math.floor(1 / exposureTime) + " sec"
+      : `${exposureTime} sec`
     : undefined;

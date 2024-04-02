@@ -47,7 +47,7 @@ model Metadata {
     lens         String?
     editedIn     String?
     createdAt    DateTime?
-    exposure     Int?
+    exposure     String?
     iso          Int?
     aperture     Float?
     focalLength  Int?

@@ -13,5 +13,9 @@ img {
 }
 
 .centered-from-header {
-    transform: translateY(-4rem);
+    transform: translateY(4rem);
+}
+
+.no-nav {
+    height: calc(100vh - 4rem);
 }
