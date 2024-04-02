@@ -50,7 +50,7 @@ const Form = (onClose?: any) => {
   };
 
   return (
-    <div className="form-wrapper centered-from-header">
+    <div className="form-wrapper">
       <h1>Upload</h1>
       {error && <p className="error form-annoucment">{error}</p>}
       {form.formState.errors.file?.message && (
