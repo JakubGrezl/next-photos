@@ -1,35 +1,33 @@
 "use server";
 
 import { FileUpload } from "@/schema";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-import { getUserID } from "@/lib/auth"
+import { getUserID } from "@/lib/auth";
 import { loadExifBuffer } from "@/hooks/load-exif";
 import { uploadExifData } from "./uploadExifData";
 
-const MAX_FILE_SIZE : number = 100;
-const ACCEPTED_IMAGE_TYPES : string[] = ["image/jpeg", "image/jpg"];
+const MAX_FILE_SIZE: number = 100;
+const ACCEPTED_IMAGE_TYPES: string[] = ["image/jpeg", "image/jpg"];
 
-const CLOUDFLARE_R2_BUCKET =
-  process.env.NEXT_PUBLIC_CLOUDFLARE_R2_BUCKET ?? '';
+const CLOUDFLARE_R2_BUCKET = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_BUCKET ?? "";
 const CLOUDFLARE_R2_ACCOUNT_ID =
-  process.env.NEXT_PUBLIC_CLOUDFLARE_R2_ACCOUNT_ID ?? '';
+  process.env.NEXT_PUBLIC_CLOUDFLARE_R2_ACCOUNT_ID ?? "";
 const CLOUDFLARE_R2_PUBLIC_DOMAIN =
-  process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_DOMAIN ?? '';
-const CLOUDFLARE_R2_ACCESS_KEY =
-  process.env.CLOUDFLARE_R2_ACCESS_KEY ?? '';
+  process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_DOMAIN ?? "";
+const CLOUDFLARE_R2_ACCESS_KEY = process.env.CLOUDFLARE_R2_ACCESS_KEY ?? "";
 const CLOUDFLARE_R2_SECRET_ACCESS_KEY =
-  process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ?? '';
+  process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ?? "";
 const CLOUDFLARE_R2_ENDPOINT = CLOUDFLARE_R2_ACCOUNT_ID
   ? `https://${CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`
   : undefined;
 
 let photo;
 
- const CLOUDFLARE_R2_BASE_URL_PUBLIC = CLOUDFLARE_R2_PUBLIC_DOMAIN
+const CLOUDFLARE_R2_BASE_URL_PUBLIC = CLOUDFLARE_R2_PUBLIC_DOMAIN
   ? `https://${CLOUDFLARE_R2_PUBLIC_DOMAIN}`
   : undefined;
 const CLOUDFLARE_R2_BASE_URL_PRIVATE =
@@ -37,34 +35,34 @@ const CLOUDFLARE_R2_BASE_URL_PRIVATE =
     ? `${CLOUDFLARE_R2_ENDPOINT}/${CLOUDFLARE_R2_BUCKET}`
     : undefined;
 
-const R2client = () => new S3Client({
-  region: 'auto',
-  endpoint: CLOUDFLARE_R2_ENDPOINT,
-  credentials: {
-    accessKeyId: CLOUDFLARE_R2_ACCESS_KEY,
-    secretAccessKey: CLOUDFLARE_R2_SECRET_ACCESS_KEY,
-  },
-});
+const R2client = () =>
+  new S3Client({
+    region: "auto",
+    endpoint: CLOUDFLARE_R2_ENDPOINT,
+    credentials: {
+      accessKeyId: CLOUDFLARE_R2_ACCESS_KEY,
+      secretAccessKey: CLOUDFLARE_R2_SECRET_ACCESS_KEY,
+    },
+  });
 
 export const r2upload = async (values: FormData) => {
   let result = FileUpload.safeParse(values);
   if (!result.success) {
     return { error: "Invalid file!" };
   } else {
-
     const file = values.get("file") as File;
     const title = values.get("title") as string;
 
     if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-      return { error: "Invalid file type! JPG, JPEG are only approved formats"};
+      return {
+        error: "Invalid file type! JPG, JPEG are only approved formats",
+      };
     }
 
     if (file.size > MAX_FILE_SIZE * 1024 * 1024) {
       return { error: `File is too large! Max siez is ${MAX_FILE_SIZE} mb` };
-     }
+    }
 
-    
-    
     const userID = await getUserID();
     if (userID) {
       try {
@@ -72,13 +70,13 @@ export const r2upload = async (values: FormData) => {
           data: {
             title: title,
             userId: userID,
-            path: "", 
-          }
+            path: "",
+          },
         });
       } catch (error: any) {
         throw new Error(error.message);
       }
-      
+
       const filename = photo.id;
       const filepath = `${CLOUDFLARE_R2_BASE_URL_PUBLIC}/${filename}`;
       const buffer = Buffer.from(await file.arrayBuffer());
@@ -86,15 +84,14 @@ export const r2upload = async (values: FormData) => {
       if (exif) {
         uploadExifData(photo.id, exif);
       }
-  
+
       const filetype = file.type;
       try {
         await uploadToR2(filename, buffer, R2client(), filetype);
         await db.photo.update({
           where: { id: photo.id },
-          data: { path: filepath }
-        
-      });
+          data: { path: filepath },
+        });
         revalidatePath("/");
         return { success: "Photo Uploaded!" };
       } catch (error) {
@@ -103,17 +100,20 @@ export const r2upload = async (values: FormData) => {
       }
     }
   }
-  
-}
+};
 
-const uploadToR2 = async (filename : string, buffer : Buffer, client : S3Client, filetype : string) => {
+const uploadToR2 = async (
+  filename: string,
+  buffer: Buffer,
+  client: S3Client,
+  filetype: string
+) => {
   const param = {
     Bucket: process.env.NEXT_PUBLIC_CLOUDFLARE_R2_BUCKET,
     Key: filename,
     Body: buffer,
-    ContentType: filetype
-  }
-
+    ContentType: filetype,
+  };
 
   const command = new PutObjectCommand(param);
   await client.send(command);
