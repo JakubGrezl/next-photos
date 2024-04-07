@@ -155,6 +155,7 @@ export default function Photo() {
             </Link>
           ) : null}
         </p>
+        <div>{}</div>
       </div>
     </main>
   );

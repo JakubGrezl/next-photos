@@ -1,16 +1,6 @@
 import { z } from "zod";
 const MAX_FILE_SIZE : number = 100;
-const ACCEPTED_IMAGE_TYPES : string[] = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-
-function checkFileType(file: File) { // file type checking
-    if (file?.name) {
-        const fileType = file.name.split(".").pop();
-        if (ACCEPTED_IMAGE_TYPES.includes(fileType!)) return true; 
-    }
-    return false;
-}
-
-
+const ACCEPTED_IMAGE_TYPES : string[] = ["image/jpeg", "image/jpg", "image/png"];
 
 export const UserSchema = z.object({
     email: z.string().email({ message: "Zadej email!" }),
@@ -24,10 +14,7 @@ export const UserSchemaRegister = UserSchema.extend({
     repeatPassword: z.string()
 })
 
-
 export const FileUpload = z.object({
     title: z.string().optional(),
     file: z.any()
-        // .refine((file) => file?.size < MAX_FILE_SIZE, "Max size is 3MB.") // file size validation
-        // .refine((file) => checkFileType(file), "Only .jpg, .gif, .png formats are supported."),
 })
