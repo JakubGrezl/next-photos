@@ -32,7 +32,7 @@ const Form = () => {
   };
 
   return (
-    <div className="form-wrapper centered-from-header">
+    <div className="form-wrapper">
       <h1>Login</h1>
       {error && <p className="error">{error}</p>}
       <form onSubmit={form.handleSubmit(onSubmit)} action="submit">

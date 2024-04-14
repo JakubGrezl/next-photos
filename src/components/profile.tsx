@@ -5,6 +5,7 @@ import UploadModal from "@/components/upload-modal";
 import { currentUserPhotosCount } from "@/hooks/use-current-user";
 import "@/styles/profile.css";
 import { useSession } from "next-auth/react";
+import Comments from "@/components/comments";
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -35,11 +36,16 @@ const ProfilePage = () => {
             alt="profile picture"
           />
         </div>
-        <div className="profileinformation-wrapper">
-          <TextCard title="Name">{user?.name ?? ""}</TextCard>
-          <TextCard title="Email">{user?.email ?? ""}</TextCard>
-          <TextCard title="Photos uploaded">{numberPhotos ?? 0}</TextCard>
-          <UploadModal />
+        <div className="flex flex-col">
+          <div className="profileinformation-wrapper">
+            <TextCard title="Name">{user?.name ?? ""}</TextCard>
+            <TextCard title="Email">{user?.email ?? ""}</TextCard>
+            <TextCard title="Photos uploaded">{numberPhotos ?? 0}</TextCard>
+            <UploadModal />
+          </div>
+          {/* <div className="flex flex-col align-bottom">
+            {user?.id ? <Comments id={user?.id} /> : null}
+          </div> */}
         </div>
       </div>
       <div className="flex no-nav overflow-auto">

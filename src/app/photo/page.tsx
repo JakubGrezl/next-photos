@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 
 const Page = dynamic(() => import("@/components/photo"), {
-  ssr: false,
+  ssr: true,
 });
 
 const Photo = () => {

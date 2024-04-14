@@ -1,22 +1,26 @@
+"use client";
+
 import Image from "next/image";
 import style from "@/styles/photo-page.module.scss";
 import Link from "next/link";
 import { loadPhoto } from "@/hooks/load-photos";
-import { loadExif, loadExifDatabase } from "@/hooks/load-exif";
+import { loadExifDatabase } from "@/hooks/load-exif";
 import { useEffect, useState } from "react";
-import { Photo } from "@/components/photos-wrapper";
 import { useSearchParams } from "next/navigation";
 import Prisma from "@prisma/client";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
 import { cn } from "@/lib/utils";
-
+import Comments from "@/components/comments";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
+
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export default function Photo() {
   const searchParams = useSearchParams();
 
-  const id = searchParams.get("id");
+  const user = useCurrentUser();
+  const pid = searchParams.get("id");
   const profilePage: boolean =
     searchParams.get("profilePage") === "true" ? true : false;
   const [photo, setPhoto] = useState<Prisma.Photo>();
@@ -38,11 +42,11 @@ export default function Photo() {
     }
   };
 
-  if (id)
+  if (pid)
     useEffect(() => {
       const load = async () => {
-        const photo = await loadPhoto(id);
-        const exif = await loadExifDatabase(id);
+        const photo = await loadPhoto(pid);
+        const exif = await loadExifDatabase(pid);
         return { photo, exif };
       };
 
@@ -50,7 +54,7 @@ export default function Photo() {
         setPhoto(data.photo);
         setExif(data.exif);
       });
-    }, [id]);
+    }, [pid]);
 
   const exifDataHTML = () => {
     return (
@@ -81,7 +85,7 @@ export default function Photo() {
             : "No upload date data"}
         </p>
         <p>
-          <span>EXPOSURE: </span> 1/{exif?.exposure ?? "No exposure data"}
+          <span>EXPOSURE: </span> {exif?.exposure ?? "No exposure data"}
         </p>
         <p>
           <span>ISO: </span> {exif?.iso ?? "No iso data"}
@@ -112,52 +116,57 @@ export default function Photo() {
   };
 
   return (
-    <main className="flex no-nav p-2 box-border overflow-auto">
-      {reroute()}
+    <>
+      <main className="flex no-nav p-2 box-border overflow-auto">
+        {reroute()}
 
-      <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
-        <Image
-          className="max-w-full max-h-full object-contain"
-          alt={photo?.title ?? "This photo doesnt have any title"}
-          src={photo?.path ?? "/placeholder.png"}
-          key={photo?.path}
-          width={4000}
-          height={4000}
-          priority
-        />
-      </div>
-      <div className={cn("w-1/2", style.description)}>
-        <p>
-          <span>TITLE: </span>
-          {photo?.title ?? "Undefiend"}
-        </p>
-        <p>
-          <span>UPLOADED AT: </span>
-          {photo?.createdAt
-            ? photo.createdAt.getDate() +
-              "." +
-              photo.createdAt.getMonth() +
-              "." +
-              photo.createdAt.getFullYear() +
-              " " +
-              photo.createdAt.getHours() +
-              ":" +
-              photo.createdAt.getMinutes() +
-              ":" +
-              photo.createdAt.getSeconds()
-            : "Undefiend"}
-        </p>
-        {exif ? exifDataHTML() : null}
-        <p>
-          {photo?.path ? (
-            <Link href={photo?.path}>
-              <InsertLinkIcon />
-            </Link>
-          ) : null}
-        </p>
-        <div>{}</div>
-      </div>
-    </main>
+        <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
+          <Image
+            className="max-w-full max-h-full object-contain"
+            alt={photo?.title ?? "This photo doesnt have any title"}
+            src={photo?.path ?? "/placeholder.png"}
+            key={photo?.path}
+            width={4000}
+            height={4000}
+            priority
+          />
+        </div>
+        <div className={cn("w-1/2", style.description)}>
+          <p>
+            <span>{user?.name ?? ""}</span>
+          </p>
+          <p>
+            <span>TITLE: </span>
+            {photo?.title ?? "Undefiend"}
+          </p>
+          <p>
+            <span>UPLOADED AT: </span>
+            {photo?.createdAt
+              ? photo.createdAt.getDate() +
+                "." +
+                photo.createdAt.getMonth() +
+                "." +
+                photo.createdAt.getFullYear() +
+                " " +
+                photo.createdAt.getHours() +
+                ":" +
+                photo.createdAt.getMinutes() +
+                ":" +
+                photo.createdAt.getSeconds()
+              : "Undefiend"}
+          </p>
+          {exif ? exifDataHTML() : null}
+          <p>
+            {photo?.path ? (
+              <Link href={photo?.path}>
+                <InsertLinkIcon />
+              </Link>
+            ) : null}
+          </p>
+          <div>{pid ? <Comments pid={pid} /> : null}</div>
+        </div>
+      </main>
+    </>
   );
 }
 

@@ -33,7 +33,7 @@ export default function UploadModal() {
               <>
                 {/* <ModalHeader>Upload</ModalHeader> */}
                 <ModalBody>
-                  <Form onClose={onClose} className="no-nav" />
+                  <Form onClose={onClose} />
                 </ModalBody>
               </>
             )}

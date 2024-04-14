@@ -16,3 +16,7 @@ export const FileUpload = z.object({
   title: z.string().optional(),
   file: z.any(),
 });
+
+export const Comment = z.object({
+  text: z.string(),
+});
