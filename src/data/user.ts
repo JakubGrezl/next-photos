@@ -27,6 +27,22 @@ export const userById = async (uid: string) => {
   }
 };
 
+export const userByIdWithRelations = async (uid: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        id: uid,
+      },
+      include: {
+        Comment: true,
+      },
+    });
+    return user;
+  } catch (error) {
+    return null;
+  }
+};
+
 export const userByName = async (name: string) => {
   try {
     const user = await db.user.findUnique({

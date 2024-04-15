@@ -52,16 +52,3 @@ export const numberUserPhotos = async (uuid: string) => {
     throw err;
   }
 };
-
-export const getComments = async (pid: string) => {
-  try {
-    return await db.comment.findMany({
-      where: {
-        photoId: pid,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};

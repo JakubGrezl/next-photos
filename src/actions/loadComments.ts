@@ -1,6 +1,6 @@
-import { getComments } from "@/data/photo";
+import { getCommentsWithRelations } from "@/data/comment";
 
 export const commentsLoad = async (pid: string) => {
-  const comments = await getComments(pid);
+  const comments = await getCommentsWithRelations(pid);
   return comments;
 };

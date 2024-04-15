@@ -10,12 +10,11 @@ import { Comment } from "@/schema";
 import { commentUpload } from "@/actions/commentsUpload";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-import { formatCommentTitle } from "@/lib/utils";
-
 import { TextCard } from "@/components/cards";
+import { CommentWithUser } from "@/data/comment";
 
 const Comments = (params: { pid: string }) => {
-  const [comments, setComments] = useState<Prisma.Comment[]>();
+  const [comments, setComments] = useState<CommentWithUser[]>();
 
   const user = useCurrentUser();
 
@@ -34,6 +33,7 @@ const Comments = (params: { pid: string }) => {
 
     fetchComments(params.pid).then((comments) => {
       setComments(comments);
+      console.log(comments);
     });
   }, []);
 
@@ -53,7 +53,7 @@ const Comments = (params: { pid: string }) => {
           <input type="submit" value="Submit" />
         </form>
         {comments
-          ? comments.map((comment: Prisma.Comment) => (
+          ? comments.map((comment: CommentWithUser) => (
               <div key={comment.id} className="w-1/2">
                 {formatCommentTitle(comment).then((title: string) => (
                   <TextCard title={title}>{comment.text}</TextCard>
@@ -64,6 +64,20 @@ const Comments = (params: { pid: string }) => {
       </div>
     </>
   );
+};
+
+const formatCommentTitle = async (comment: CommentWithUser) => {
+  let minutes;
+
+  if (comment.createdAt.getMinutes() < 10) {
+    minutes = `0${comment.createdAt.getMinutes()}`;
+  } else {
+    minutes = comment.createdAt.getMinutes();
+  }
+
+  return `${comment.createdAt.getHours()}:${minutes} ${comment.createdAt.getDate()}.${comment.createdAt.getMonth()}.${comment.createdAt.getFullYear()} ${
+    "- " + comment.user?.name ?? ""
+  }`;
 };
 
 export default Comments;
