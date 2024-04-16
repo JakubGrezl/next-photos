@@ -18,8 +18,6 @@ import Divider from "@mui/material/Divider";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-import { TextCard } from "@/components/cards";
-
 export default function Photo() {
   const searchParams = useSearchParams();
 
@@ -121,7 +119,7 @@ export default function Photo() {
 
   return (
     <>
-      <main className="flex no-nav p-2 box-border overflow-hidden">
+      <main className="flex no-nav p-2 box-border overflow-auto">
         {reroute()}
 
         <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
@@ -135,7 +133,9 @@ export default function Photo() {
             priority
           />
         </div>
-        <div className={cn("flex flex-col gap-2 w-1/2", style.description)}>
+        <div
+          className={cn("flex flex-col gap-2 w-1/2 no-nav", style.description)}
+        >
           <Divider>BASIC DATA</Divider>
           <div>
             <p>
@@ -173,7 +173,7 @@ export default function Photo() {
             </p>
           </div>
           <Divider>COMMENTS</Divider>
-          <div className="max-w-min">{pid ? <Comments pid={pid} /> : null}</div>
+          <div>{pid ? <Comments pid={pid} /> : null}</div>
         </div>
       </main>
     </>

@@ -1,6 +1,5 @@
 import { commentsLoad } from "@/actions/loadComments";
 import { useState, useEffect, useRef } from "react";
-import Prisma from "@prisma/client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { set, z } from "zod";
@@ -13,7 +12,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { TextCard } from "@/components/cards";
 import { CommentWithUser } from "@/data/comment";
 
-import "@/styles/card.css";
+import "@/styles/form.css";
 
 const Comments = (params: { pid: string }) => {
   const [comments, setComments] = useState<CommentWithUser[]>();
@@ -26,6 +25,7 @@ const Comments = (params: { pid: string }) => {
   const onSubmit = (values: z.infer<typeof Comment>) => {
     commentUpload(values, user!.id, params.pid);
     fetchComments();
+    form.reset();
   };
 
   const fetchComments = async () => {
@@ -40,27 +40,30 @@ const Comments = (params: { pid: string }) => {
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col max-h-fit">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-60 flex-col"
+          className="flex flex-row w-full gap-3 items-center"
         >
-          <div>
+          <div className="input-wrapper">
+            <label htmlFor="comment">comment</label>
             <input
               type="text"
               id="comment"
-              placeholder="Comment"
+              placeholder=""
               {...form.register("text")}
             />
-            <input type="submit" value="Submit" />
           </div>
+          <input className="submit-button" type="submit" value="Submit" />
         </form>
         <div className="flex flex-col gap-2">
           {comments
             ? comments.map((comment: CommentWithUser) => (
                 <div key={comment.id}>
                   {formatCommentTitle(comment).then((title: string) => (
-                    <TextCard title={title}>{comment.text}</TextCard>
+                    <TextCard className="pe-2" title={title}>
+                      {comment.text}
+                    </TextCard>
                   ))}
                 </div>
               ))
