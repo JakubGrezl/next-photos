@@ -119,7 +119,7 @@ export default function Photo() {
 
   return (
     <>
-      <main className="flex no-nav p-2 box-border overflow-auto">
+      <main className="flex no-nav p-2 box-border">
         {reroute()}
 
         <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
@@ -134,7 +134,10 @@ export default function Photo() {
           />
         </div>
         <div
-          className={cn("flex flex-col gap-2 w-1/2 no-nav", style.description)}
+          className={cn(
+            "flex flex-col gap-2 w-1/2 overflow-auto max-h-[calc(100vh - 4rem)]",
+            style.description
+          )}
         >
           <Divider>BASIC DATA</Divider>
           <div>
@@ -173,7 +176,7 @@ export default function Photo() {
             </p>
           </div>
           <Divider>COMMENTS</Divider>
-          <div>{pid ? <Comments pid={pid} /> : null}</div>
+          <div className="p2">{pid ? <Comments pid={pid} /> : null}</div>
         </div>
       </main>
     </>

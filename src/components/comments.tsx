@@ -40,7 +40,7 @@ const Comments = (params: { pid: string }) => {
 
   return (
     <>
-      <div className="flex flex-col max-h-fit">
+      <div className="flex flex-col">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-row w-full gap-3 items-center"
