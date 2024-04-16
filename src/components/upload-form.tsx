@@ -18,7 +18,7 @@ const Form = (onClose?: any) => {
   const form = useForm<z.infer<typeof FileUpload>>({
     resolver: zodResolver(FileUpload),
     defaultValues: {
-      title: "no title:(",
+      title: "",
     },
   });
 

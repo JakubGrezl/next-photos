@@ -38,14 +38,17 @@ const ProfilePage = () => {
         </div>
         <div className="flex flex-col">
           <div className="profileinformation-wrapper">
-            <TextCard title="Name">{user?.name ?? ""}</TextCard>
-            <TextCard title="Email">{user?.email ?? ""}</TextCard>
-            <TextCard title="Photos uploaded">{numberPhotos ?? 0}</TextCard>
+            <TextCard className="!w-full" title="Name">
+              {user?.name ?? ""}
+            </TextCard>
+            <TextCard className="!w-full" title="Email">
+              {user?.email ?? ""}
+            </TextCard>
+            <TextCard className="!w-full" title="Photos uploaded">
+              {numberPhotos ?? 0}
+            </TextCard>
             <UploadModal />
           </div>
-          {/* <div className="flex flex-col align-bottom">
-            {user?.id ? <Comments id={user?.id} /> : null}
-          </div> */}
         </div>
       </div>
       <div className="flex no-nav overflow-auto">

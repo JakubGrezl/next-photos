@@ -18,5 +18,5 @@ export const FileUpload = z.object({
 });
 
 export const Comment = z.object({
-  text: z.string(),
+  text: z.string().min(4, { message: "Zadej text!" }),
 });

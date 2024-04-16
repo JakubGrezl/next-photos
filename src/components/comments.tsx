@@ -1,5 +1,5 @@
 import { commentsLoad } from "@/actions/loadComments";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Prisma from "@prisma/client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,9 +13,10 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { TextCard } from "@/components/cards";
 import { CommentWithUser } from "@/data/comment";
 
+import "@/styles/card.css";
+
 const Comments = (params: { pid: string }) => {
   const [comments, setComments] = useState<CommentWithUser[]>();
-
   const user = useCurrentUser();
 
   const form = useForm<z.infer<typeof Comment>>({
@@ -24,17 +25,17 @@ const Comments = (params: { pid: string }) => {
 
   const onSubmit = (values: z.infer<typeof Comment>) => {
     commentUpload(values, user!.id, params.pid);
+    fetchComments();
   };
 
-  useEffect(() => {
-    const fetchComments = async (pid: string) => {
-      return await commentsLoad(pid);
-    };
+  const fetchComments = async () => {
+    const loadedComments = await commentsLoad(params.pid);
+    setComments(loadedComments);
+  };
 
-    fetchComments(params.pid).then((comments) => {
-      setComments(comments);
-      console.log(comments);
-    });
+  // Initial load of comments
+  useEffect(() => {
+    fetchComments();
   }, []);
 
   return (
@@ -44,23 +45,27 @@ const Comments = (params: { pid: string }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex w-60 flex-col"
         >
-          <input
-            type="text"
-            id="comment"
-            placeholder="Comment"
-            {...form.register("text")}
-          />
-          <input type="submit" value="Submit" />
+          <div>
+            <input
+              type="text"
+              id="comment"
+              placeholder="Comment"
+              {...form.register("text")}
+            />
+            <input type="submit" value="Submit" />
+          </div>
         </form>
-        {comments
-          ? comments.map((comment: CommentWithUser) => (
-              <div key={comment.id} className="w-1/2">
-                {formatCommentTitle(comment).then((title: string) => (
-                  <TextCard title={title}>{comment.text}</TextCard>
-                ))}
-              </div>
-            ))
-          : null}
+        <div className="flex flex-col gap-2">
+          {comments
+            ? comments.map((comment: CommentWithUser) => (
+                <div key={comment.id}>
+                  {formatCommentTitle(comment).then((title: string) => (
+                    <TextCard title={title}>{comment.text}</TextCard>
+                  ))}
+                </div>
+              ))
+            : null}
+        </div>
       </div>
     </>
   );

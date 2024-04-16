@@ -14,7 +14,11 @@ import { cn } from "@/lib/utils";
 import Comments from "@/components/comments";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
+import Divider from "@mui/material/Divider";
+
 import { useCurrentUser } from "@/hooks/use-current-user";
+
+import { TextCard } from "@/components/cards";
 
 export default function Photo() {
   const searchParams = useSearchParams();
@@ -66,7 +70,7 @@ export default function Photo() {
           <span>LENS: </span> {exif?.lens ?? "No lens data"}
         </p>
         <p>
-          <span>EDITED IN: </span> {exif?.editedIn ?? "No editing data"}
+          <span>PROGRAM: </span> {exif?.editedIn ?? "No editing data"}
         </p>
         <p>
           <span>CREATED AT: </span>{" "}
@@ -117,7 +121,7 @@ export default function Photo() {
 
   return (
     <>
-      <main className="flex no-nav p-2 box-border overflow-auto">
+      <main className="flex no-nav p-2 box-border overflow-hidden">
         {reroute()}
 
         <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
@@ -131,39 +135,45 @@ export default function Photo() {
             priority
           />
         </div>
-        <div className={cn("w-1/2", style.description)}>
-          <p>
-            <span>{user?.name ?? ""}</span>
-          </p>
-          <p>
-            <span>TITLE: </span>
-            {photo?.title ?? "Undefiend"}
-          </p>
-          <p>
-            <span>UPLOADED AT: </span>
-            {photo?.createdAt
-              ? photo.createdAt.getDate() +
-                "." +
-                photo.createdAt.getMonth() +
-                "." +
-                photo.createdAt.getFullYear() +
-                " " +
-                photo.createdAt.getHours() +
-                ":" +
-                photo.createdAt.getMinutes() +
-                ":" +
-                photo.createdAt.getSeconds()
-              : "Undefiend"}
-          </p>
-          {exif ? exifDataHTML() : null}
-          <p>
-            {photo?.path ? (
-              <Link href={photo?.path}>
-                <InsertLinkIcon />
-              </Link>
-            ) : null}
-          </p>
-          <div>{pid ? <Comments pid={pid} /> : null}</div>
+        <div className={cn("flex flex-col gap-2 w-1/2", style.description)}>
+          <Divider>BASIC DATA</Divider>
+          <div>
+            <p>
+              USER: <span>{user?.name ?? ""}</span>
+            </p>
+            <p>
+              TITLE: <span>{photo?.title ?? ""}</span>
+            </p>
+          </div>
+          <Divider>ADVANCED METADATA</Divider>
+          <div>
+            <p>
+              <span>UPLOADED AT: </span>
+              {photo?.createdAt
+                ? photo.createdAt.getDate() +
+                  "." +
+                  photo.createdAt.getMonth() +
+                  "." +
+                  photo.createdAt.getFullYear() +
+                  " " +
+                  photo.createdAt.getHours() +
+                  ":" +
+                  photo.createdAt.getMinutes() +
+                  ":" +
+                  photo.createdAt.getSeconds()
+                : "Undefiend"}
+            </p>
+            {exif ? exifDataHTML() : null}
+            <p>
+              {photo?.path ? (
+                <Link href={photo?.path}>
+                  <InsertLinkIcon />
+                </Link>
+              ) : null}
+            </p>
+          </div>
+          <Divider>COMMENTS</Divider>
+          <div className="max-w-min">{pid ? <Comments pid={pid} /> : null}</div>
         </div>
       </main>
     </>
