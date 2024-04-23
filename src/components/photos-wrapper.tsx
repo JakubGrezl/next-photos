@@ -5,7 +5,6 @@ import Image from "next/image";
 import { photosLoad, userPhotosLoad } from "@/actions/loadPhotos";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 interface PhotosProps {
   uuid?: string;
