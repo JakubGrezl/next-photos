@@ -72,7 +72,9 @@ export default async function Page() {
           <strong>Hloubka ostrosti</strong> je vzdálenost, ve které je
           fotografie ostrá, používá se tedy pro rozmazání pozadí
         </p>
-
+        <pre className="overflow-hidden whitespace-normal">
+          Tuto funkci použijeme, pokud chceme rozmazat pozadí fotografie
+        </pre>
         <figure>
           <img src="/tutorial/aperture.jpg" alt="Ukázka clony" />
           <figcaption>
@@ -91,6 +93,12 @@ export default async function Page() {
           Rychlost uzávěrky ovlivňuje to, jak dlouho je snímač fotoaparátu
           vystaven světlu, čím delší čas, tím více světla se dostane na snímač.
         </p>
+        <pre className="overflow-hidden whitespace-normal">
+          Tuto funkci použijeme, pokud chceme zachytit pohyb. Ovšem vyšší
+          rychlost uzávěrky znamená, že se do fotoaparátu dostane víc světla,
+          což zlepší kvalitu fotografiem pro statické objekty doporučujeme vyšší
+          uzávěrku
+        </pre>
         <figure>
           <img
             src="/tutorial/shutterspeed.png"
