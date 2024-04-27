@@ -101,6 +101,8 @@ export default async function Page() {
             https://www.pinterest.com/pin/examples-of-shutter-speed-in-photography--637189047252210187/
           </figcaption>
         </figure>
+        <hr />
+        <hr />
       </article>
     </main>
   );
