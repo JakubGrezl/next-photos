@@ -1,12 +1,6 @@
-export const publicRouters = [
-    "/",
-    "/photo",
-];
+export const publicRouters = ["/", "/photo", "/tutorial", "/tailwind-markdown"];
 
-export const authRoutes = [
-    "/login",
-    "/register"
-]
+export const authRoutes = ["/login", "/register"];
 
 export const apiAuthPrefix = "/api/auth";
 

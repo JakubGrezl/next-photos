@@ -23,6 +23,7 @@ const Header = async () => {
             </>
           )}
           <Link href="/map">Map</Link>
+          <Link href="/tutorial">Tutorial</Link>
           <Link href="/">Home</Link>
         </ul>
       </nav>
