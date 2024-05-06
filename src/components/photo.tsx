@@ -118,68 +118,66 @@ export default function Photo() {
   };
 
   return (
-    <>
-      <main className="flex no-nav p-2 box-border">
-        {reroute()}
+    <div className="flex no-nav p-2 box-border">
+      {reroute()}
 
-        <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
-          <Image
-            className="max-w-full max-h-full object-contain"
-            alt={photo?.title ?? "This photo doesnt have any title"}
-            src={photo?.path ?? "/placeholder.png"}
-            key={photo?.path}
-            width={4000}
-            height={4000}
-            priority
-          />
+      <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
+        <Image
+          className="max-w-full max-h-full object-contain"
+          alt={photo?.title ?? "This photo doesnt have any title"}
+          src={photo?.path ?? "/placeholder.png"}
+          key={photo?.path}
+          width={4000}
+          height={4000}
+          priority
+        />
+      </div>
+      <div
+        className={cn(
+          "flex flex-col gap-2 w-1/2 overflow-auto max-h-[calc(100vh - 4rem)]",
+          style.description
+        )}
+      >
+        <Divider>BASIC DATA</Divider>
+        <div>
+          <p>
+            USER: <span>{user?.name ?? ""}</span>
+          </p>
+          <p>
+            TITLE: <span>{photo?.title ?? ""}</span>
+          </p>
         </div>
-        <div
-          className={cn(
-            "flex flex-col gap-2 w-1/2 overflow-auto max-h-[calc(100vh - 4rem)]",
-            style.description
-          )}
-        >
-          <Divider>BASIC DATA</Divider>
-          <div>
-            <p>
-              USER: <span>{user?.name ?? ""}</span>
-            </p>
-            <p>
-              TITLE: <span>{photo?.title ?? ""}</span>
-            </p>
-          </div>
-          <Divider>ADVANCED METADATA</Divider>
-          <div>
-            <p>
-              <span>UPLOADED AT: </span>
-              {photo?.createdAt
-                ? photo.createdAt.getDate() +
-                  "." +
-                  photo.createdAt.getMonth() +
-                  "." +
-                  photo.createdAt.getFullYear() +
-                  " " +
-                  photo.createdAt.getHours() +
-                  ":" +
-                  photo.createdAt.getMinutes() +
-                  ":" +
-                  photo.createdAt.getSeconds()
-                : "Undefiend"}
-            </p>
-            {exif ? exifDataHTML() : null}
-            <p>
-              {photo?.path ? (
-                <Link href={photo?.path}>
-                  <InsertLinkIcon />
-                </Link>
-              ) : null}
-            </p>
-          </div>
-          <Divider>COMMENTS</Divider>
-          <div className="p2">{pid ? <Comments pid={pid} /> : null}</div>
+        <Divider>ADVANCED METADATA</Divider>
+        <div>
+          <p>
+            <span>UPLOADED AT: </span>
+            {photo?.createdAt
+              ? photo.createdAt.getDate() +
+                "." +
+                photo.createdAt.getMonth() +
+                "." +
+                photo.createdAt.getFullYear() +
+                " " +
+                photo.createdAt.getHours() +
+                ":" +
+                photo.createdAt.getMinutes() +
+                ":" +
+                photo.createdAt.getSeconds()
+              : "Undefiend"}
+          </p>
+          {exif ? exifDataHTML() : null}
+          <p>
+            {photo?.path ? (
+              <Link href={photo?.path}>
+                <InsertLinkIcon />
+              </Link>
+            ) : null}
+          </p>
         </div>
-      </main>
-    </>
+        <Divider>COMMENTS</Divider>
+        <div className="p2">{pid ? <Comments pid={pid} /> : null}</div>
+      </div>
+    </div>
   );
 }
 
