@@ -10,7 +10,7 @@ const nextConfig = {
     includePaths: [path.join(__dirname, '/styles')],
   },
   images: {
-    domains: ["localhost",process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_DOMAIN ],
+    domains: ["localhost",process.env.CLOUDFLARE_R2_PUBLIC_IMAGE_URL ],
   },
 };
 
