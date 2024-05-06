@@ -54,7 +54,7 @@ export default function Map() {
       </MapContainer>
     );
   } else {
-    return <>Loading</>;
+    return <Loading />;
   }
 }
 
