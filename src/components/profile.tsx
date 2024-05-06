@@ -29,7 +29,7 @@ const ProfilePage = () => {
 
   return (
     <main className="flex flex-row no-nav">
-      <div className="flex flex-col w-1/4 rounded ">
+      <div className="wrapper">
         <div className="profilepicture-wrapper">
           <img
             src={user?.image ? user?.image : "no-profile-picture.webp"}
