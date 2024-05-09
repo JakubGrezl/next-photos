@@ -1,0 +1,1 @@
+SELECT nazev FROM druhy_vyrobku;
