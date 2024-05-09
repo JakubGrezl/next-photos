@@ -5,34 +5,36 @@ import UploadModal from "@/components/upload-modal";
 import { currentUserPhotosCount } from "@/hooks/use-current-user";
 import "@/styles/profile.css";
 import { useSession } from "next-auth/react";
-import Comments from "@/components/comments";
-
+import { User } from "next-auth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
 });
 
-const ProfilePage = () => {
+export default function ProfilePage() {
   const [numberPhotos, setNumberPhotos] = useState<number>();
+  const [user, setUser] = useState<User>();
 
   const session = useSession();
-
-  const user = session.data?.user;
-
   useEffect(() => {
-    currentUserPhotosCount(user).then((number) => {
-      if (number) setNumberPhotos(number);
-    });
+    if (session.data?.user) setUser(session.data?.user);
+    if (user)
+      currentUserPhotosCount(user).then((number) => {
+        if (number) setNumberPhotos(number);
+      });
   });
 
   return (
     <main className="flex flex-row no-nav">
       <div className="wrapper">
         <div className="profilepicture-wrapper">
-          <img
-            src={user?.image ? user?.image : "no-profile-picture.webp"}
+          <Image
+            width={200}
+            height={200}
+            src={user?.image ? user?.image : "/no-profile-picture.webp"}
             alt="profile picture"
           />
         </div>
@@ -52,10 +54,8 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className="flex no-nav overflow-auto">
-        <Photos uuid={user!.id} />
+        {user?.id ? <Photos uuid={user!.id} /> : null}
       </div>
     </main>
   );
-};
-
-export default ProfilePage;
+}

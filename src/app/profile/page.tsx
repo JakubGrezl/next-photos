@@ -1,17 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import ProfilePage from "@/components/profile";
 
-const ProfilePage = dynamic(() => import("@/components/profile"), {
-  ssr: false,
-});
-
-const Profile = () => {
-  return (
-    <>
-      <ProfilePage />
-    </>
-  );
-};
-
-export default Profile;
+export default function Profile() {
+  return <ProfilePage />;
+}

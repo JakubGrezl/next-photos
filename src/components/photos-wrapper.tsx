@@ -33,29 +33,27 @@ const Photos = (props: PhotosProps) => {
     loadImages();
   }, [props.uuid]);
 
-  if (images.length === 0) {
-    return <p className="text-4xl self-auto overflow-hidden p-3">Loading</p>;
-  }
-
   return (
     <div className="photos-wrapper p-3">
-      {images.map((el: Photo) => (
-        <Link
-          href={{
-            pathname: "/photo",
-            query: { id: el.id, profilePage: props.uuid ? true : false },
-          }}
-        >
-          <Image
-            className="photo"
-            width={300}
-            height={300}
-            alt={"Photo"}
-            src={el.path}
-            key={el.path}
-          />
-        </Link>
-      ))}
+      {images
+        ? images.map((el: Photo) => (
+            <Link
+              href={{
+                pathname: "/photo",
+                query: { id: el.id, profilePage: props.uuid ? true : false },
+              }}
+            >
+              <Image
+                className="photo"
+                width={300}
+                height={300}
+                alt={"Photo"}
+                src={el.path}
+                key={el.path}
+              />
+            </Link>
+          ))
+        : null}
     </div>
   );
 };
