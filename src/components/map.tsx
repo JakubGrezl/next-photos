@@ -7,6 +7,7 @@ import type { MetadataWithPhotos } from "@/data/map";
 import L from "leaflet";
 import Loading from "@/app/loading";
 import Link from "next/link";
+import MarkerClusterGroup from "react-leaflet-cluster";
 
 type coordinates = {
   latitude: number;
@@ -40,18 +41,23 @@ export default function Map() {
     return (
       <MapContainer className="h-screen">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {metadata
-          ? metadata.map((marker) =>
-              marker.longitude && marker.latitude
-                ? CustomMarker(
-                    { latitude: marker.latitude, longitude: marker.longitude },
-                    marker.photo.path,
-                    marker.photo.title,
-                    marker.photo.id
-                  )
-                : null
-            )
-          : null}
+        <MarkerClusterGroup>
+          {metadata
+            ? metadata.map((marker) =>
+                marker.longitude && marker.latitude
+                  ? CustomMarker(
+                      {
+                        latitude: marker.latitude,
+                        longitude: marker.longitude,
+                      },
+                      marker.photo.path,
+                      marker.photo.title,
+                      marker.photo.id
+                    )
+                  : null
+              )
+            : null}
+        </MarkerClusterGroup>
         <ChangeView coords={center} />
       </MapContainer>
     );
