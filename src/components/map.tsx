@@ -6,6 +6,7 @@ import { fetchMarkers } from "@/actions/fetchMarkers";
 import type { MetadataWithPhotos } from "@/data/map";
 import L from "leaflet";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
 type coordinates = {
   latitude: number;
@@ -45,7 +46,8 @@ export default function Map() {
                 ? CustomMarker(
                     { latitude: marker.latitude, longitude: marker.longitude },
                     marker.photo.path,
-                    marker.photo.title
+                    marker.photo.title,
+                    marker.photo.id
                   )
                 : null
             )
@@ -61,21 +63,30 @@ export default function Map() {
 function CustomMarker(
   position: coordinates,
   path: string,
-  title: string | null
+  title: string | null,
+  pid: string
 ) {
   let icon = L.icon({
     iconUrl: path,
+    iconRetinaUrl: path,
     iconSize: [50, 50],
     iconAnchor: [25, 50],
     popupAnchor: [0, -50],
   });
 
   return (
-    <Marker
-      position={[position.latitude, position.longitude]}
-      icon={icon}
-      alt={title ?? "no title"}
-      key={position.latitude + position.longitude}
-    />
+    <Link href={`/photo?id=${pid}`} className="z-50">
+      <Marker
+        position={[position.latitude, position.longitude]}
+        icon={icon}
+        alt={title ?? "no title"}
+        key={position.latitude + position.longitude}
+        eventHandlers={{
+          click: (e) => {
+            window.location.href = `/photo?id=${pid}`;
+          },
+        }}
+      />
+    </Link>
   );
 }

@@ -1,0 +1,17 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "vps.jakubgrezl.cz",
+      "port": 3306,
+      "driver": "MariaDB",
+      "name": "pizzeria",
+      "database": "pizzerie3ITA",
+      "username": "root"
+    }
+  ]
+}
