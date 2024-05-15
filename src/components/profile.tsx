@@ -4,11 +4,11 @@ import { TextCard } from "@/components/cards";
 import UploadModal from "@/components/upload-modal";
 import { currentUserPhotosCount } from "@/hooks/use-current-user";
 import "@/styles/profile.css";
-import { useSession } from "next-auth/react";
-import { User } from "next-auth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { getUser, UserWithPhotoCount } from "@/actions/session";
+import Loading from "@/app/loading";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
@@ -16,16 +16,25 @@ const Photos = dynamic(() => import("@/components/photos-wrapper"), {
 
 export default function ProfilePage() {
   const [numberPhotos, setNumberPhotos] = useState<number>();
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<UserWithPhotoCount>();
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const session = useSession();
   useEffect(() => {
-    if (session.data?.user) setUser(session.data?.user);
-    if (user)
-      currentUserPhotosCount(user).then((number) => {
-        if (number) setNumberPhotos(number);
-      });
-  });
+    getUser().then((user) => {
+      if (user) {
+        setUser(user);
+        if (user)
+          currentUserPhotosCount(user).then((number) => {
+            if (number) {
+              setNumberPhotos(number);
+              setLoading(false);
+            }
+          });
+      }
+    });
+  }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <main className="flex flex-row no-nav">

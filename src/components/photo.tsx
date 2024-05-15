@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import style from "@/styles/photo-page.module.scss";
 import Link from "next/link";
@@ -175,7 +173,7 @@ export default function Photo() {
           </p>
         </div>
         <Divider>COMMENTS</Divider>
-        <div className="p2">{pid ? <Comments pid={pid} /> : null}</div>
+        <div className="px-3 p2">{pid ? <Comments pid={pid} /> : null}</div>
       </div>
     </div>
   );

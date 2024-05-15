@@ -1,4 +1,3 @@
-"use client";
 import dynamic from "next/dynamic";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {

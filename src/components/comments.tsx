@@ -33,7 +33,6 @@ const Comments = (params: { pid: string }) => {
     setComments(loadedComments);
   };
 
-  // Initial load of comments
   useEffect(() => {
     fetchComments();
   }, []);
@@ -43,7 +42,7 @@ const Comments = (params: { pid: string }) => {
       <div className="flex flex-col">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-row w-full gap-3 items-center"
+          className="flex flex-row w-full justify-center gap-3 items-center"
         >
           <div className="input-wrapper">
             <label htmlFor="comment">comment</label>
