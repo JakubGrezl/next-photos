@@ -6,7 +6,7 @@ const Photos = dynamic(() => import("@/components/photos-wrapper"), {
 
 export default function Home() {
   return (
-    <main className="flex max-h-[calc(100vh-64px)] overflow-auto">
+    <main className="flex max-h-[calc(100vh-64px)] overflow-auto align-baseline">
       <Photos />
     </main>
   );

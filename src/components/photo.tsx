@@ -1,7 +1,8 @@
 import Image from "next/image";
 import style from "@/styles/photo-page.module.scss";
 import Link from "next/link";
-import { loadPhoto } from "@/hooks/load-photos";
+import { loadPhotoWithUser } from "@/hooks/load-photos";
+import type { PhotoWithUser } from "@/data/photo";
 import { loadExifDatabase } from "@/hooks/load-exif";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -11,19 +12,14 @@ import HomeIcon from "@mui/icons-material/Home";
 import { cn } from "@/lib/utils";
 import Comments from "@/components/comments";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
-
 import Divider from "@mui/material/Divider";
-
-import { useCurrentUser } from "@/hooks/use-current-user";
 
 export default function Photo() {
   const searchParams = useSearchParams();
-
-  const user = useCurrentUser();
   const pid = searchParams.get("id");
   const profilePage: boolean =
     searchParams.get("profilePage") === "true" ? true : false;
-  const [photo, setPhoto] = useState<Prisma.Photo>();
+  const [photo, setPhoto] = useState<PhotoWithUser>();
   const [exif, setExif] = useState<Prisma.Metadata>();
 
   const reroute = () => {
@@ -45,7 +41,7 @@ export default function Photo() {
   if (pid)
     useEffect(() => {
       const load = async () => {
-        const photo = await loadPhoto(pid);
+        const photo = await loadPhotoWithUser(pid);
         const exif = await loadExifDatabase(pid);
         return { photo, exif };
       };
@@ -139,7 +135,7 @@ export default function Photo() {
         <Divider>BASIC DATA</Divider>
         <div>
           <p>
-            USER: <span>{user?.name ?? ""}</span>
+            USER: <span>{photo?.user?.name ?? ""}</span>
           </p>
           <p>
             TITLE: <span>{photo?.title ?? ""}</span>

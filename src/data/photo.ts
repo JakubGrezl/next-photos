@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import Prisma from "@prisma/client";
 
 export const getPhotos = async () => {
   try {
@@ -23,6 +24,27 @@ export const getPhoto = async (uuid: string) => {
     console.error(err);
     throw err;
   }
+};
+
+export const getPhotoWithUser = async (uuid: string) => {
+  try {
+    const photo = await db.photo.findMany({
+      where: {
+        id: uuid,
+      },
+      include: {
+        user: true,
+      },
+    });
+    return photo[0];
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export type PhotoWithUser = Prisma.Photo & {
+  user: Prisma.User;
 };
 
 export const getUserPhotos = async (uuid: string) => {

@@ -2,13 +2,14 @@
 
 import { TextCard } from "@/components/cards";
 import UploadModal from "@/components/upload-modal";
-import { currentUserPhotosCount } from "@/hooks/use-current-user";
+import { getUser } from "@/actions/session";
+import type { UserWithPhotoCount } from "@/actions/session";
 import "@/styles/profile.css";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { getUser, UserWithPhotoCount } from "@/actions/session";
 import Loading from "@/app/loading";
+import Divider from "@mui/material/Divider";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
@@ -23,13 +24,8 @@ export default function ProfilePage() {
     getUser().then((user) => {
       if (user) {
         setUser(user);
-        if (user)
-          currentUserPhotosCount(user).then((number) => {
-            if (number) {
-              setNumberPhotos(number);
-              setLoading(false);
-            }
-          });
+        setNumberPhotos(user._count.Photo);
+        setLoading(false);
       }
     });
   }, []);
@@ -37,18 +33,19 @@ export default function ProfilePage() {
   if (loading) return <Loading />;
 
   return (
-    <main className="flex flex-row no-nav">
-      <div className="wrapper">
-        <div className="profilepicture-wrapper">
+    <main className="flex lg:flex-row flex-col no-nav p-5">
+      <div className="flex lg:flex-col flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-lg lg:custom-shadow gap-10">
+        <div className="flex flex-row justify-center lg:w-full h-[200px]">
           <Image
             width={200}
             height={200}
             src={user?.image ? user?.image : "/no-profile-picture.webp"}
             alt="profile picture"
+            className="rounded-lg object-cover lg:w-[200px] min-w-[150px] lg:h-[200px] h-[150px]"
           />
         </div>
-        <div className="flex flex-col">
-          <div className="profileinformation-wrapper">
+        <div className="w-full">
+          <div className="lg:flex flex-col gap-2 hidden">
             <TextCard className="!w-full" title="Name">
               {user?.name ?? ""}
             </TextCard>
@@ -58,11 +55,23 @@ export default function ProfilePage() {
             <TextCard className="!w-full" title="Photos uploaded">
               {numberPhotos ?? 0}
             </TextCard>
-            <UploadModal />
+            <div className="flex justify-center">
+              <UploadModal />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 lg:hidden ">
+            Username: {user?.name ?? ""}
+            <Divider />
+            Email: {user?.email ?? ""}
+            <Divider />
+            Photos Taken: {numberPhotos ?? 0}
+            <div className="flex justify-center">
+              <UploadModal />
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex no-nav overflow-auto">
+      <div className="no-nav overflow-auto">
         {user?.id ? <Photos uuid={user!.id} /> : null}
       </div>
     </main>

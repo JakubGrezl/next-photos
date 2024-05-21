@@ -7,16 +7,17 @@ import { useForm } from "react-hook-form";
 import { Comment } from "@/schema";
 
 import { commentUpload } from "@/actions/commentsUpload";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { getUser } from "@/actions/session";
 
 import { TextCard } from "@/components/cards";
 import { CommentWithUser } from "@/data/comment";
 
 import "@/styles/form.css";
+import { User } from "@prisma/client";
 
 const Comments = (params: { pid: string }) => {
   const [comments, setComments] = useState<CommentWithUser[]>();
-  const user = useCurrentUser();
+  const [user, setUser] = useState<User>();
 
   const form = useForm<z.infer<typeof Comment>>({
     resolver: zodResolver(Comment),
@@ -34,6 +35,10 @@ const Comments = (params: { pid: string }) => {
   };
 
   useEffect(() => {
+    getUser().then((user) => {
+      if (user) setUser(user);
+    });
+
     fetchComments();
   }, []);
 
