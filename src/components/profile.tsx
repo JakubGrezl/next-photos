@@ -33,8 +33,8 @@ export default function ProfilePage() {
   if (loading) return <Loading />;
 
   return (
-    <main className="flex lg:flex-row flex-col no-nav p-5">
-      <div className="flex lg:flex-col flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-lg lg:custom-shadow gap-10">
+    <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto">
+      <div className="flex lg:flex-col flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-xl lg:custom-shadow gap-10">
         <div className="flex flex-row justify-center lg:w-full h-[200px]">
           <Image
             width={200}
@@ -71,7 +71,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <div className="no-nav overflow-auto">
+      <div className="no-nav lg:overflow-auto">
         {user?.id ? <Photos uuid={user!.id} /> : null}
       </div>
     </main>

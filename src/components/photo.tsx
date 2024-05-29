@@ -115,7 +115,7 @@ export default function Photo() {
     <div className="flex no-nav p-2 box-border">
       {reroute()}
 
-      <div className="w-1/2 max-h-[calc(100vh - 4rem)] p-5">
+      <div className="lg:w-1/2 max-h-[calc(100vh - 4rem)] p-5">
         <Image
           className="max-w-full max-h-full object-contain"
           alt={photo?.title ?? "This photo doesnt have any title"}
