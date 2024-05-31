@@ -18,8 +18,8 @@ export default function UploadModal() {
 
   return (
     <>
-      <button onClick={onOpen} className="button">
-        Open Modal
+      <button onClick={onOpen} className="button !text-xs !font-bold">
+        UPLOAD PHOTO
       </button>
       <NextUIProvider>
         <Modal

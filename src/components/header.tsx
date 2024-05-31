@@ -1,33 +1,61 @@
 import React from "react";
-import "@/styles/navbar.css";
 import Link from "next/link";
 import { auth } from "@/auth";
+import Accordion from "@mui/material/Accordion";
 
 const Header = async () => {
   const session = await auth();
 
   return (
-    <React.Fragment>
-      <nav>
-        <h1>Next Photos</h1>
-        <ul>
+    <nav className="p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="text-black text-2xl">Next Photos</h1>
+        <ul className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-4">
           {session ? (
             <>
-              <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
-              <Link href="/profile">Profile</Link>
+              <li>
+                <Link href="/api/auth/signout?callbackUrl=/" passHref>
+                  <p className="text-black hover:underline">Logout</p>
+                </Link>
+              </li>
+              <li>
+                <Link href="/profile" passHref>
+                  <p className="text-black hover:underline">Profile</p>
+                </Link>
+              </li>
             </>
           ) : (
             <>
-              <Link href="/login">Login</Link>
-              <Link href="/register">Register</Link>
+              <li>
+                <Link href="/login" passHref>
+                  <p className="text-black hover:underline">Login</p>
+                </Link>
+              </li>
+              <li>
+                <Link href="/register" passHref>
+                  <p className="text-black hover:underline">Register</p>
+                </Link>
+              </li>
             </>
           )}
-          <Link href="/map">Map</Link>
-          <Link href="/tutorial">Tutorial</Link>
-          <Link href="/">Home</Link>
+          <li>
+            <Link href="/map" passHref>
+              <p className="text-black hover:underline">Map</p>
+            </Link>
+          </li>
+          <li>
+            <Link href="/tutorial" passHref>
+              <p className="text-black hover:underline">Tutorial</p>
+            </Link>
+          </li>
+          <li>
+            <Link href="/" passHref>
+              <p className="text-black hover:underline">Home</p>
+            </Link>
+          </li>
         </ul>
-      </nav>
-    </React.Fragment>
+      </div>
+    </nav>
   );
 };
 

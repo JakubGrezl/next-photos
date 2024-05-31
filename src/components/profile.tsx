@@ -4,7 +4,6 @@ import { TextCard } from "@/components/cards";
 import UploadModal from "@/components/upload-modal";
 import { getUser } from "@/actions/session";
 import type { UserWithPhotoCount } from "@/actions/session";
-import "@/styles/profile.css";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -34,7 +33,7 @@ export default function ProfilePage() {
 
   return (
     <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto">
-      <div className="flex lg:flex-col flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-xl lg:custom-shadow gap-10">
+      <div className="flex lg:flex-col lg:h-min flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-xl lg:custom-shadow gap-10 lg:self-center">
         <div className="flex flex-row justify-center lg:w-full h-[200px]">
           <Image
             width={200}
@@ -72,7 +71,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="no-nav lg:overflow-auto">
-        {user?.id ? <Photos uuid={user!.id} /> : null}
+        {user?.id ? <Photos uuid={user!.id} isProfile /> : null}
       </div>
     </main>
   );
