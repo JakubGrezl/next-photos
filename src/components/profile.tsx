@@ -71,7 +71,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="no-nav lg:overflow-auto">
-        {user?.id ? <Photos uuid={user!.id} isProfile /> : null}
+        {user?.id ? <Photos uuid={user!.id} /> : null}
       </div>
     </main>
   );
