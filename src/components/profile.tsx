@@ -24,41 +24,42 @@ export default function ProfilePage() {
   const [isPending, startTransition] = useTransition();
   const [numberPhotos, setNumberPhotos] = useState<number>();
   const [user, setUser] = useState<UserWithPhotoCount>();
+  const [userProfilePicture, setUserProfilePicture] = useState<string | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [checked, setChecked] = useState<boolean>(false);
-  const [file, setFile] = useState<File>();
   const [error, setError] = useState<string>();
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(e.target.files![0]);
-    onSubmit(form.getValues());
-  };
-
-  const form = useForm<z.infer<typeof PPSchema>>({
-    resolver: zodResolver(PPSchema),
-  });
 
   useEffect(() => {
     getUser().then((user) => {
       if (user) {
         setUser(user);
+        setUserProfilePicture(user.image);
         setNumberPhotos(user._count.Photo);
         setLoading(false);
       }
     });
   }, []);
 
-  async function onSubmit(values: z.infer<typeof PPSchema>) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSubmit(e.target.files![0]);
+  };
+
+  async function onSubmit(file: File) {
     const formData = new FormData();
     formData.append("file", file!);
 
-    startTransition(() => {
-      ppUpload(formData).then((data) => {
-        if (data?.error) {
-          setError(data.error);
-        }
+    if (!file) {
+      setError("No file selected");
+    } else {
+      startTransition(() => {
+        ppUpload(formData).then((data) => {
+          if (data?.error) {
+            setError("upload error: " + data.error);
+            setUserProfilePicture(data.profilePicture);
+          }
+        });
       });
-    });
+    }
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +91,11 @@ export default function ProfilePage() {
               <Image
                 width={200}
                 height={200}
-                src={user?.image ? user?.image : "/no-profile-picture.webp"}
+                src={
+                  userProfilePicture
+                    ? userProfilePicture
+                    : "/no-profile-picture.webp"
+                }
                 alt="profile picture"
                 className="rounded-lg object-cover lg:w-[200px] min-w-[150px] lg:h-[200px] h-[150px]"
               />
