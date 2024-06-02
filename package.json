@@ -21,6 +21,7 @@
     "@mui/material": "^5.15.16",
     "@next/mdx": "^14.2.2",
     "@nextui-org/react": "^2.2.9",
+    "@nextui-org/switch": "^2.0.30",
     "@prisma/client": "^5.8.1",
     "@types/bcrypt": "^5.0.2",
     "@types/leaflet": "^1.9.12",

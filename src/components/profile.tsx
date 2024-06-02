@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Loading from "@/app/loading";
 import Divider from "@mui/material/Divider";
+import { IOSSwitch } from "./IOSswitch";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
@@ -18,6 +19,7 @@ export default function ProfilePage() {
   const [numberPhotos, setNumberPhotos] = useState<number>();
   const [user, setUser] = useState<UserWithPhotoCount>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
     getUser().then((user) => {
@@ -28,6 +30,11 @@ export default function ProfilePage() {
       }
     });
   }, []);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setChecked(event.target.checked);
+  };
 
   if (loading) return <Loading />;
 
@@ -54,6 +61,10 @@ export default function ProfilePage() {
             <TextCard className="!w-full" title="Photos uploaded">
               {numberPhotos ?? 0}
             </TextCard>
+            <div className="flex flex-row items-center gap-2">
+              <IOSSwitch checked={checked} onChange={handleChange} />
+              <span className="antialiased font-semibold">Delete photos</span>
+            </div>
             <div className="flex justify-center">
               <UploadModal />
             </div>
@@ -71,7 +82,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="no-nav lg:overflow-auto">
-        {user?.id ? <Photos uuid={user!.id} isProfile /> : null}
+        {user?.id ? <Photos uuid={user!.id} deletionMode={checked} /> : null}
       </div>
     </main>
   );
