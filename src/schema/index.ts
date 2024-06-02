@@ -17,6 +17,10 @@ export const FileUpload = z.object({
   file: z.any(),
 });
 
+export const PPSchema = z.object({
+  file: z.any(),
+});
+
 export const Comment = z.object({
   text: z.string().min(4, { message: "Zadej text!" }),
 });

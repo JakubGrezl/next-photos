@@ -5,21 +5,38 @@ import UploadModal from "@/components/upload-modal";
 import { getUser } from "@/actions/session";
 import type { UserWithPhotoCount } from "@/actions/session";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Image from "next/image";
 import Loading from "@/app/loading";
 import Divider from "@mui/material/Divider";
 import { IOSSwitch } from "./IOSswitch";
+import { ppUpload } from "@/actions/uploadProfilePicture";
+import { PPSchema } from "@/schema";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
 });
 
 export default function ProfilePage() {
+  const [isPending, startTransition] = useTransition();
   const [numberPhotos, setNumberPhotos] = useState<number>();
   const [user, setUser] = useState<UserWithPhotoCount>();
   const [loading, setLoading] = useState<boolean>(true);
   const [checked, setChecked] = useState<boolean>(false);
+  const [file, setFile] = useState<File>();
+  const [error, setError] = useState<string>();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files![0]);
+    onSubmit(form.getValues());
+  };
+
+  const form = useForm<z.infer<typeof PPSchema>>({
+    resolver: zodResolver(PPSchema),
+  });
 
   useEffect(() => {
     getUser().then((user) => {
@@ -31,6 +48,19 @@ export default function ProfilePage() {
     });
   }, []);
 
+  async function onSubmit(values: z.infer<typeof PPSchema>) {
+    const formData = new FormData();
+    formData.append("file", file!);
+
+    startTransition(() => {
+      ppUpload(formData).then((data) => {
+        if (data?.error) {
+          setError(data.error);
+        }
+      });
+    });
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setChecked(event.target.checked);
@@ -41,14 +71,31 @@ export default function ProfilePage() {
   return (
     <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto">
       <div className="flex lg:flex-col lg:h-min flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-xl lg:custom-shadow gap-10 lg:self-center">
+        {error ? <p className="error form-annoucment">{error}</p> : null}
         <div className="flex flex-row justify-center lg:w-full h-[200px]">
-          <Image
-            width={200}
-            height={200}
-            src={user?.image ? user?.image : "/no-profile-picture.webp"}
-            alt="profile picture"
-            className="rounded-lg object-cover lg:w-[200px] min-w-[150px] lg:h-[200px] h-[150px]"
-          />
+          <form>
+            <label htmlFor="file" className="relative">
+              <input
+                type="file"
+                accept="image/*"
+                id="file"
+                required
+                disabled={isPending}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <div className="rounded-lg absolute transparent-background hover:opacity-100 lg:opacity-0 w-full h-full flex items-center justify-center">
+                <span className="text-white">Change profile picture</span>
+              </div>
+              <Image
+                width={200}
+                height={200}
+                src={user?.image ? user?.image : "/no-profile-picture.webp"}
+                alt="profile picture"
+                className="rounded-lg object-cover lg:w-[200px] min-w-[150px] lg:h-[200px] h-[150px]"
+              />
+            </label>
+          </form>
         </div>
         <div className="w-full">
           <div className="lg:flex flex-col gap-2 hidden">

@@ -3,10 +3,8 @@
 import { FileUpload } from "@/schema";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-
+import uniqid from "uniqid";
 import { getUserID } from "@/lib/auth";
-import { loadExifBuffer } from "@/hooks/load-exif";
-import { uploadExifData } from "./uploadExifData";
 
 import {
   CLOUDFLARE_R2_BASE_URL_PUBLIC,
@@ -15,17 +13,14 @@ import {
 } from "@/lib/cloudflare";
 
 const MAX_FILE_SIZE: number = 100;
-const ACCEPTED_IMAGE_TYPES: string[] = ["image/jpeg", "image/jpg"];
+const ACCEPTED_IMAGE_TYPES: string[] = ["image/jpeg", "image/jpg", "image/png"];
 
-let photo;
-
-export const r2upload = async (values: FormData) => {
+export const ppUpload = async (values: FormData) => {
   let result = FileUpload.safeParse(values);
   if (!result.success) {
     return { error: "Invalid file!" };
   } else {
     const file = values.get("file") as File;
-    const title = values.get("title") as string;
 
     if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
       return {
@@ -39,32 +34,20 @@ export const r2upload = async (values: FormData) => {
 
     const userID = await getUserID();
     if (userID) {
-      try {
-        photo = await db.photo.create({
-          data: {
-            title: title,
-            userId: userID,
-            path: "",
-          },
-        });
-      } catch (error: any) {
-        throw new Error(error.message);
-      }
-
-      const filename = photo.id;
+      const filename = uniqid();
       const filepath = `${CLOUDFLARE_R2_BASE_URL_PUBLIC}/${filename}`;
       const buffer = Buffer.from(await file.arrayBuffer());
-      const exif = await loadExifBuffer(buffer);
-      if (exif) {
-        uploadExifData(photo.id, exif);
-      }
 
       const filetype = file.type;
       try {
         await uploadToR2(filename, buffer, R2client(), filetype);
-        await db.photo.update({
-          where: { id: photo.id },
-          data: { path: filepath },
+        await db.user.update({
+          where: {
+            id: userID,
+          },
+          data: {
+            image: filepath,
+          },
         });
         revalidatePath("/");
         return { success: "Photo Uploaded!" };

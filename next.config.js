@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const path = require('path')
 const nextConfig = {
   experimental: {
@@ -10,7 +11,7 @@ const nextConfig = {
     includePaths: [path.join(__dirname, '/styles')],
   },
   images: {
-    domains: ["localhost",process.env.CLOUDFLARE_R2_PUBLIC_IMAGE_URL ],
+    domains: ["localhost", process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_DOMAIN],
   },
 };
 
