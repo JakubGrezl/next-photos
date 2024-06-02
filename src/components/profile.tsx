@@ -11,10 +11,6 @@ import Loading from "@/app/loading";
 import Divider from "@mui/material/Divider";
 import { IOSSwitch } from "./IOSswitch";
 import { ppUpload } from "@/actions/uploadProfilePicture";
-import { PPSchema } from "@/schema";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,

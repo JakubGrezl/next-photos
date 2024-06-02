@@ -50,7 +50,7 @@ export const ppUpload = async (values: FormData) => {
           },
         });
         revalidatePath("/");
-        return { success: "Photo Uploaded!" };
+        return { success: "Photo Uploaded!", profilePicture: filepath };
       } catch (error) {
         console.error(error);
         return { error: "Something went wrong!" };
