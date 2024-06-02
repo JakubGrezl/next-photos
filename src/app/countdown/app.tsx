@@ -19,7 +19,6 @@ export default function App() {
     hours,
     minutes,
     seconds,
-    milliseconds,
     completed,
   }: CountdownRenderProps) => {
     if (completed) {
@@ -43,14 +42,14 @@ export default function App() {
 
   if (countdown)
     return (
-      <div className="bg-black flex flex-row relative justify-center items-center h-screen w-full ">
+      <div className="bg-black flex flex-row relative justify-center items-center h-screen w-full lg:m-0 m-5">
         <Image
           src="/gg.png"
           layout="fill"
           alt="sad"
-          className="opacity-30 h-screen w-full"
+          className="opacity-30 h-full w-full"
         />
-        <span className="text-white text-lg absolute">
+        <span className="text-white lg:text-lg text-sm absolute">
           Obhajoby jsou za: <Countdown date={countdown} renderer={renderer} />
         </span>
 
