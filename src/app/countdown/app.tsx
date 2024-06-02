@@ -6,12 +6,15 @@ import Countdown, {
 } from "react-countdown";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Divider } from "@mui/material";
 
 export default function App() {
-  const [countdown, setCountdown] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState<string>();
+  const [dokumentace, setDokumentace] = useState<string>();
 
   useEffect(() => {
     setCountdown("2024-06-10T08:00:00");
+    setDokumentace("2024-06-07T23:59:59");
   }, []);
 
   const renderer: CountdownRendererFn = ({
@@ -42,16 +45,19 @@ export default function App() {
 
   if (countdown)
     return (
-      <div className="bg-black flex flex-row relative justify-center items-center h-screen w-full lg:m-0 m-5">
+      <div className="bg-black flex flex-row relative justify-center items-center h-screen w-full lg:p-0 p-5">
         <Image
           src="/gg.png"
           layout="fill"
           alt="sad"
           className="opacity-30 h-full w-full"
         />
-        <span className="text-white lg:text-lg text-sm absolute">
+        <div className="text-white lg:text-lg text-sm absolute text-center">
           Obhajoby jsou za: <Countdown date={countdown} renderer={renderer} />
-        </span>
+          <br />
+          Dokumentace mají být odevzdané za:{" "}
+          <Countdown date={dokumentace} renderer={renderer} />
+        </div>
 
         <span className="text-sm text-white flex self-end">
           spokojenej tomáši??
