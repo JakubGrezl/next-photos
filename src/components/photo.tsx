@@ -7,8 +7,6 @@ import { loadExifDatabase } from "@/hooks/load-exif";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Prisma from "@prisma/client";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import HomeIcon from "@mui/icons-material/Home";
 import { cn } from "@/lib/utils";
 import Comments from "@/components/comments";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
@@ -17,26 +15,8 @@ import Divider from "@mui/material/Divider";
 export default function Photo() {
   const searchParams = useSearchParams();
   const pid = searchParams.get("id");
-  const profilePage: boolean =
-    searchParams.get("profilePage") === "true" ? true : false;
   const [photo, setPhoto] = useState<PhotoWithUser>();
   const [exif, setExif] = useState<Prisma.Metadata>();
-
-  const reroute = () => {
-    if (profilePage) {
-      return (
-        <Link className={style.closeButton} href="/profile">
-          <AccountCircleIcon />
-        </Link>
-      );
-    } else {
-      return (
-        <Link className={style.closeButton} href="/">
-          <HomeIcon />
-        </Link>
-      );
-    }
-  };
 
   if (pid)
     useEffect(() => {
@@ -113,8 +93,6 @@ export default function Photo() {
 
   return (
     <div className="flex no-nav p-2 box-border">
-      {reroute()}
-
       <div className="lg:w-1/2 max-h-[calc(100vh - 4rem)] p-5">
         <Image
           className="max-w-full max-h-full object-contain"
@@ -138,7 +116,11 @@ export default function Photo() {
             USER: <span>{photo?.user?.name ?? ""}</span>
           </p>
           <p>
-            TITLE: <span>{photo?.title ?? ""}</span>
+            {photo?.title ? (
+              <p>
+                TITLE: <span>{photo.title}</span>
+              </p>
+            ) : null}
           </p>
         </div>
         <Divider>ADVANCED METADATA</Divider>
@@ -160,13 +142,13 @@ export default function Photo() {
               : "Undefiend"}
           </p>
           {exif ? exifDataHTML() : null}
-          <p>
+          <div className="flex flex-row gap-2">
             {photo?.path ? (
               <Link href={photo?.path}>
                 <InsertLinkIcon />
               </Link>
             ) : null}
-          </p>
+          </div>
         </div>
         <Divider>COMMENTS</Divider>
         <div className="px-3 p2">{pid ? <Comments pid={pid} /> : null}</div>

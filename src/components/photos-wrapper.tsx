@@ -57,7 +57,7 @@ const Photos = (props: PhotosProps) => {
               <Link
                 href={{
                   pathname: "/photo",
-                  query: { id: el.id, profilePage: props.uuid ? true : false },
+                  query: { id: el.id },
                 }}
               >
                 <Image

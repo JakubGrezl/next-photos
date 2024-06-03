@@ -1,10 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const Page = dynamic(() => import("@/components/photo"), {
-  ssr: true,
-});
+import Page from "@/components/photo";
 
 const Photo = () => {
   return <Page />;

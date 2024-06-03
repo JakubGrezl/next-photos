@@ -64,11 +64,14 @@ const Comments = (params: { pid: string }) => {
           {comments
             ? comments.map((comment: CommentWithUser) => (
                 <div key={comment.id}>
-                  {formatCommentTitle(comment).then((title: string) => (
-                    <TextCard className="pe-2" title={title}>
+                  {
+                    <TextCard
+                      className="pe-2"
+                      title={formatCommentTitle(comment)}
+                    >
                       {comment.text}
                     </TextCard>
-                  ))}
+                  }
                 </div>
               ))
             : null}
@@ -78,7 +81,7 @@ const Comments = (params: { pid: string }) => {
   );
 };
 
-const formatCommentTitle = async (comment: CommentWithUser) => {
+function formatCommentTitle(comment: CommentWithUser) {
   let minutes;
 
   if (comment.createdAt.getMinutes() < 10) {
@@ -90,6 +93,6 @@ const formatCommentTitle = async (comment: CommentWithUser) => {
   return `${comment.createdAt.getHours()}:${minutes} ${comment.createdAt.getDate()}.${comment.createdAt.getMonth()}.${comment.createdAt.getFullYear()} ${
     "- " + comment.user?.name ?? ""
   }`;
-};
+}
 
 export default Comments;
