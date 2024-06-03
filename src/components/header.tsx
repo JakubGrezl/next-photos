@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { auth } from "@/auth";
-import Accordion from "@mui/material/Accordion";
 
 const Header = async () => {
   const session = await auth();
@@ -9,7 +8,9 @@ const Header = async () => {
   return (
     <nav className="p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-black text-2xl">Next Photos</h1>
+        <Link href="/" className="text-black text-2xl">
+          Next Photos
+        </Link>
         <ul className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-4">
           {session ? (
             <>
