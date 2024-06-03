@@ -5,7 +5,7 @@ import UploadModal from "@/components/upload-modal";
 import { getUser } from "@/actions/session";
 import type { UserWithPhotoCount } from "@/actions/session";
 import dynamic from "next/dynamic";
-import { useEffect, useState, useTransition, useCallback, memo } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Image from "next/image";
 import Divider from "@mui/material/Divider";
 import { IOSSwitch } from "./IOSswitch";
@@ -33,14 +33,11 @@ const ProfilePage = () => {
     });
   }, []);
 
-  const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onSubmit(e.target.files![0]);
-    },
-    []
-  );
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSubmit(e.target.files![0]);
+  };
 
-  const onSubmit = useCallback((file: File) => {
+  const onSubmit = (file: File) => {
     const formData = new FormData();
     formData.append("file", file!);
 
@@ -58,15 +55,12 @@ const ProfilePage = () => {
         });
       });
     }
-  }, []);
+  };
 
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      event.preventDefault();
-      setChecked(event.target.checked);
-    },
-    []
-  );
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setChecked(event.target.checked);
+  };
 
   return (
     <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto">
@@ -139,4 +133,4 @@ const ProfilePage = () => {
   );
 };
 
-export default memo(ProfilePage);
+export default ProfilePage;

@@ -1,7 +1,7 @@
 import React from "react";
 import "@/styles/card.css";
 
-export async function TextCard(props: {
+export function TextCard(props: {
   title: string;
   className?: string;
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export async function TextCard(props: {
   );
 }
 
-export async function ButtonCard(props: {
+export function ButtonCard(props: {
   title: string;
   children: React.ReactNode;
 }) {
