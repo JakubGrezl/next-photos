@@ -5,9 +5,8 @@ import UploadModal from "@/components/upload-modal";
 import { getUser } from "@/actions/session";
 import type { UserWithPhotoCount } from "@/actions/session";
 import dynamic from "next/dynamic";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useCallback, memo } from "react";
 import Image from "next/image";
-import Loading from "@/app/loading";
 import Divider from "@mui/material/Divider";
 import { IOSSwitch } from "./IOSswitch";
 import { ppUpload } from "@/actions/uploadProfilePicture";
@@ -16,12 +15,11 @@ const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
 });
 
-export default function ProfilePage() {
+const ProfilePage = () => {
   const [isPending, startTransition] = useTransition();
   const [numberPhotos, setNumberPhotos] = useState<number>();
   const [user, setUser] = useState<UserWithPhotoCount>();
   const [userProfilePicture, setUserProfilePicture] = useState<string | null>();
-  const [loading, setLoading] = useState<boolean>(true);
   const [checked, setChecked] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
@@ -31,16 +29,18 @@ export default function ProfilePage() {
         setUser(user);
         setUserProfilePicture(user.image);
         setNumberPhotos(user._count.Photo);
-        setLoading(false);
       }
     });
   }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSubmit(e.target.files![0]);
-  };
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onSubmit(e.target.files![0]);
+    },
+    []
+  );
 
-  async function onSubmit(file: File) {
+  const onSubmit = useCallback((file: File) => {
     const formData = new FormData();
     formData.append("file", file!);
 
@@ -51,19 +51,22 @@ export default function ProfilePage() {
         ppUpload(formData).then((data) => {
           if (data?.error) {
             setError("upload error: " + data.error);
-            setUserProfilePicture(data.profilePicture);
+          }
+          if (data?.profilePicture) {
+            setUserProfilePicture(data?.profilePicture);
           }
         });
       });
     }
-  }
+  }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setChecked(event.target.checked);
-  };
-
-  if (loading) return <Loading />;
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      setChecked(event.target.checked);
+    },
+    []
+  );
 
   return (
     <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto">
@@ -101,10 +104,10 @@ export default function ProfilePage() {
         <div className="w-full">
           <div className="lg:flex flex-col gap-2 hidden">
             <TextCard className="!w-full" title="Name">
-              {user?.name ?? ""}
+              {user?.name ?? "..."}
             </TextCard>
             <TextCard className="!w-full" title="Email">
-              {user?.email ?? ""}
+              {user?.email ?? "..."}
             </TextCard>
             <TextCard className="!w-full" title="Photos uploaded">
               {numberPhotos ?? 0}
@@ -134,4 +137,6 @@ export default function ProfilePage() {
       </div>
     </main>
   );
-}
+};
+
+export default memo(ProfilePage);
