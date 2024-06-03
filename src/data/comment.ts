@@ -12,6 +12,9 @@ export const getCommentsWithRelations = async (pid: string) => {
       include: {
         user: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   } catch (err) {
     console.error(err);
