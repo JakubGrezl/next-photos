@@ -14,7 +14,7 @@ export default function App() {
 
   useEffect(() => {
     setCountdown("2024-06-10T08:00:00");
-    setDokumentace("2024-06-07T23:59:59");
+    setDokumentace("2024-06-06T23:59:59");
   }, []);
 
   const renderer: CountdownRendererFn = ({
