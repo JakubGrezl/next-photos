@@ -39,18 +39,18 @@ export default function App(props: {
   });
 
   async function onSubmit(values: z.infer<typeof MetadataChange>) {
-    startTransition(() => {
-      updateExifData(props.exif.photoId, values).then((result) => {
-        if (result) {
-          if (result?.error) {
-            setError("Invalid fields");
-          }
-          if (result?.success) {
-            onClose();
-          }
-        }
-      });
-    });
+    // startTransition(() => {
+    //   updateExifData(props.exif.photoId, values).then((result) => {
+    //     if (result) {
+    //       if (result?.error) {
+    //         setError("Invalid fields");
+    //       }
+    //       if (result?.success) {
+    //         onClose();
+    //       }
+    //     }
+    //   });
+    // });
   }
 
   return (
