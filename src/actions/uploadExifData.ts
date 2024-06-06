@@ -20,7 +20,7 @@ export const updateExifData = async (
         camera: values.camera || undefined,
         lens: values.lens || undefined,
         editedIn: values.editedIn || undefined,
-        exposure: values.exposure || undefined,
+        exposure: values.exposure?.toString() || undefined,
         iso: values.iso || undefined,
         aperture: values.aperture || undefined,
         focalLength: values.focalLength || undefined,

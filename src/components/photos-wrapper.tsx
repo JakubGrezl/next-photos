@@ -34,6 +34,18 @@ const Photos = (props: PhotosProps) => {
     loadImages();
   }, [props.uuid]);
 
+  useEffect(() => {
+    const loadImages = async () => {
+      let loadedImages = await photosLoad();
+
+      if (loadedImages) {
+        setImages(loadedImages);
+      }
+    };
+
+    loadImages();
+  }, []);
+
   const triggerDelete = async (id: string) => {
     await deletePhoto(id);
   };
@@ -51,7 +63,7 @@ const Photos = (props: PhotosProps) => {
                   }}
                   className="w-full h-full absolute flex justify-center items-center transparent-background rounded-lg lg:opacity-0 hover:opacity-100"
                 >
-                  <p className="text-sm text-white">delete ?</p>
+                  <p className="text-sm text-white">Delete ?</p>
                 </button>
               ) : null}
               <Link

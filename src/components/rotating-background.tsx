@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import "@/styles/background.css";
 
 export default function RotatingBackround() {
-  // tenhle kod zarucuje, ze rotujici se div nebude presahovat stranku
   useEffect(() => {
     const resizeBackground = () => {
       const bg = document.getElementById("bgimg");
@@ -18,11 +17,9 @@ export default function RotatingBackround() {
       }
     };
 
-    // Spustí funkci při prvním načtení a při každé změně velikosti okna
     window.addEventListener("resize", resizeBackground);
-    resizeBackground(); // Spustí také při prvním načtení
+    resizeBackground();
 
-    // Odstraní event listener při odmontování komponenty
     return () => window.removeEventListener("resize", resizeBackground);
   }, []);
 

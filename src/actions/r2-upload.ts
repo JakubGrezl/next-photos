@@ -34,7 +34,7 @@ export const r2upload = async (values: FormData) => {
     }
 
     if (file.size > MAX_FILE_SIZE * 1024 * 1024) {
-      return { error: `File is too large! Max siez is ${MAX_FILE_SIZE} mb` };
+      return { error: `File is too large! Max size is ${MAX_FILE_SIZE} mb` };
     }
 
     const userID = await getUserID();
