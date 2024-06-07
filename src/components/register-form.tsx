@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { register } from "@/actions/register";
 import { cn } from "@/lib/utils";
 
-export default async function Form() {
+export default function Form() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -46,7 +46,7 @@ export default async function Form() {
 
   return (
     <main>
-      <div className="form-wrapper centered-from-header">
+      <div className="form-wrapper absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <h1>Register</h1>
         {error && <p className="error form-annoucment">{error}</p>}
         {success && <p className="success form-annoucment">{success}</p>}

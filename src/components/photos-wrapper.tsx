@@ -51,7 +51,7 @@ const Photos = (props: PhotosProps) => {
   };
 
   return (
-    <div className="flex flex-row flex-wrap w-100 align-baseline gap-2 p-3">
+    <div className="flex flex-row flex-wrap w-100 align-baseline !justify-start gap-2 p-3">
       {images
         ? images.map((el: Photo) => (
             <div className="shrink relative grow max-w-[250px] min-w-[150px] w-[100px] h-[200px] lg:w-[200px]">
