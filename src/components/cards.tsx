@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 import "@/styles/card.css";
 
 export function TextCard(props: {
@@ -15,11 +16,11 @@ export function TextCard(props: {
 }
 
 export function ButtonCard(props: {
-  title: string;
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="button">
+    <div className={cn("button !text-xs !font-bold", props.className)}>
       <div>{props.children}</div>
     </div>
   );

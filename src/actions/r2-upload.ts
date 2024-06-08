@@ -34,7 +34,7 @@ export const r2upload = async (values: FormData) => {
     }
 
     if (file.size > MAX_FILE_SIZE * 1024 * 1024) {
-      return { error: `File is too large! Max siez is ${MAX_FILE_SIZE} mb` };
+      return { error: `File is too large! Max size is ${MAX_FILE_SIZE} mb` };
     }
 
     const userID = await getUserID();
@@ -47,26 +47,27 @@ export const r2upload = async (values: FormData) => {
             path: "",
           },
         });
-      } catch (error: any) {
-        throw new Error(error.message);
-      }
 
-      const filename = photo.id;
-      const filepath = `${CLOUDFLARE_R2_BASE_URL_PUBLIC}/${filename}`;
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const exif = await loadExifBuffer(buffer);
-      if (exif) {
-        uploadExifData(photo.id, exif);
-      }
+        const filename = photo.id;
 
-      const filetype = file.type;
-      try {
+        const filepath = `${CLOUDFLARE_R2_BASE_URL_PUBLIC}/${filename}`;
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const exif = await loadExifBuffer(buffer);
+        if (exif) {
+          uploadExifData(photo.id, exif);
+        }
+        const filetype = file.type;
         await uploadToR2(filename, buffer, R2client(), filetype);
         await db.photo.update({
           where: { id: photo.id },
           data: { path: filepath },
         });
         revalidatePath("/");
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
+
+      try {
         return { success: "Photo Uploaded!" };
       } catch (error) {
         console.error(error);

@@ -34,12 +34,24 @@ const Photos = (props: PhotosProps) => {
     loadImages();
   }, [props.uuid]);
 
+  useEffect(() => {
+    const loadImages = async () => {
+      let loadedImages = await photosLoad();
+
+      if (loadedImages) {
+        setImages(loadedImages);
+      }
+    };
+
+    loadImages();
+  }, []);
+
   const triggerDelete = async (id: string) => {
     await deletePhoto(id);
   };
 
   return (
-    <div className="flex flex-row flex-wrap w-100 align-baseline gap-2 p-3">
+    <div className="flex flex-row flex-wrap w-100 align-baseline !justify-start gap-2 p-3">
       {images
         ? images.map((el: Photo) => (
             <div className="shrink relative grow max-w-[250px] min-w-[150px] w-[100px] h-[200px] lg:w-[200px]">
@@ -51,7 +63,7 @@ const Photos = (props: PhotosProps) => {
                   }}
                   className="w-full h-full absolute flex justify-center items-center transparent-background rounded-lg lg:opacity-0 hover:opacity-100"
                 >
-                  <p className="text-sm text-white">delete ?</p>
+                  <p className="text-sm text-white">Delete ?</p>
                 </button>
               ) : null}
               <Link

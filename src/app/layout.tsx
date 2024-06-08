@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Montserrat } from "next/font/google";
 import Header from "@/components/header";
 import RotatingBackround from "@/components/rotating-background";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +29,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={cn(montserrat.className, "relative")}>
         <RotatingBackround />
         <Header />
         {children}

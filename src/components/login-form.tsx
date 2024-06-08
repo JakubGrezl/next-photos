@@ -32,9 +32,9 @@ const Form = () => {
   };
 
   return (
-    <div className="form-wrapper">
+    <div className="form-wrapper absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
       <h1>Login</h1>
-      {error && <p className="error">{error}</p>}
+      {error && <p className="text-center error">{error}</p>}
       <form onSubmit={form.handleSubmit(onSubmit)} action="submit">
         <div className={cn({ "input-wrapper": true, disabled: isPending })}>
           <label htmlFor="email">Email</label>

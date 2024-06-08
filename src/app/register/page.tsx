@@ -1,11 +1,8 @@
 import "@/styles/login.css";
-import dynamic from "next/dynamic";
+
+import RegisterForm from "@/components/register-form";
 
 export default async function Register() {
-  const RegisterForm = dynamic(() => import("@/components/register-form"), {
-    ssr: false,
-  });
-
   return (
     <main>
       <RegisterForm />

@@ -11,18 +11,24 @@ import {
 } from "@nextui-org/react";
 import Form from "@/components/upload-form";
 
+import { cn } from "@/lib/utils";
+
 import "@/styles/card.css";
 
-export default function UploadModal() {
+export default function UploadModal(props: { className?: string }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
-      <button onClick={onOpen} className="button !text-xs !font-bold">
+      <button
+        onClick={onOpen}
+        className={cn("button !text-xs !font-bold", props.className)}
+      >
         UPLOAD PHOTO
       </button>
       <NextUIProvider>
         <Modal
+          className="bg-transparent shadow-none"
           backdrop={"blur"}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
@@ -31,7 +37,6 @@ export default function UploadModal() {
           <ModalContent>
             {(onClose) => (
               <>
-                {/* <ModalHeader>Upload</ModalHeader> */}
                 <ModalBody>
                   <Form onClose={onClose} />
                 </ModalBody>

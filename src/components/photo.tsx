@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import Comments from "@/components/comments";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Divider from "@mui/material/Divider";
+import SettingsModal from "./settings-modal";
 
 export default function Photo() {
   const searchParams = useSearchParams();
@@ -60,8 +61,10 @@ export default function Photo() {
               exif.createdAt.getSeconds()
             : "No upload date data"}
         </p>
+        <Divider />
         <p>
-          <span>EXPOSURE: </span> {exif?.exposure ?? "No exposure data"}
+          <span>SHUTTER SPEED: </span>{" "}
+          {exif?.exposure ?? "No shutter speed data"}
         </p>
         <p>
           <span>ISO: </span> {exif?.iso ?? "No iso data"}
@@ -70,6 +73,7 @@ export default function Photo() {
           <span>APERTURE: </span>
           {exif?.aperture ? formatAperture(exif.aperture) : "No aperture data"}
         </p>
+        <Divider />
 
         <p>
           <span>FOCAL LENGHT: </span>
@@ -92,7 +96,7 @@ export default function Photo() {
   };
 
   return (
-    <div className="flex no-nav p-2 box-border">
+    <div className="flex no-nav p-2 box-border !lg:overflow-hidden !overflow-auto lg:flex-row flex-col">
       <div className="lg:w-1/2 max-h-[calc(100vh - 4rem)] p-5">
         <Image
           className="max-w-full max-h-full object-contain"
@@ -106,7 +110,7 @@ export default function Photo() {
       </div>
       <div
         className={cn(
-          "flex flex-col gap-2 w-1/2 overflow-auto max-h-[calc(100vh - 4rem)]",
+          "flex flex-col gap-2 lg:w-1/2 lg:overflow-auto max-h-[calc(100vh - 4rem)]",
           style.description
         )}
       >
@@ -142,12 +146,13 @@ export default function Photo() {
               : "Undefiend"}
           </p>
           {exif ? exifDataHTML() : null}
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 items-center">
             {photo?.path ? (
               <Link href={photo?.path}>
                 <InsertLinkIcon />
               </Link>
             ) : null}
+            {exif ? <SettingsModal exif={exif} title={photo?.title} /> : null}
           </div>
         </div>
         <Divider>COMMENTS</Divider>
