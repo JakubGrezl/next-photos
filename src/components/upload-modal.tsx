@@ -28,6 +28,7 @@ export default function UploadModal(props: { className?: string }) {
       </button>
       <NextUIProvider>
         <Modal
+          className="bg-transparent shadow-none"
           backdrop={"blur"}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
@@ -36,7 +37,6 @@ export default function UploadModal(props: { className?: string }) {
           <ModalContent>
             {(onClose) => (
               <>
-                {/* <ModalHeader>Upload</ModalHeader> */}
                 <ModalBody>
                   <Form onClose={onClose} />
                 </ModalBody>
