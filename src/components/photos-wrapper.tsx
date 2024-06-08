@@ -34,18 +34,6 @@ const Photos = (props: PhotosProps) => {
     loadImages();
   }, [props.uuid]);
 
-  useEffect(() => {
-    const loadImages = async () => {
-      let loadedImages = await photosLoad();
-
-      if (loadedImages) {
-        setImages(loadedImages);
-      }
-    };
-
-    loadImages();
-  }, []);
-
   const triggerDelete = async (id: string) => {
     await deletePhoto(id);
   };

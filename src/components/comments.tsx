@@ -2,7 +2,7 @@ import { commentsLoad } from "@/actions/loadComments";
 import { useState, useEffect, useRef } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, z } from "zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Comment } from "@/schema";
 
