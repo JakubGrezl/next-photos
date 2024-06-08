@@ -8,7 +8,12 @@ import * as animationData from "../../public/loading.json";
 export default function Loading() {
   return (
     <NextUIProvider>
-      <Modal backdrop={"blur"} isOpen hideCloseButton>
+      <Modal
+        className="bg-transparent shadow-none"
+        backdrop={"blur"}
+        isOpen
+        hideCloseButton
+      >
         <ModalContent>
           <Lottie speed={2.5} options={{ animationData: animationData }} />
         </ModalContent>

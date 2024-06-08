@@ -10,6 +10,7 @@ import Image from "next/image";
 import Divider from "@mui/material/Divider";
 import { IOSSwitch } from "./IOSswitch";
 import { ppUpload } from "@/actions/uploadProfilePicture";
+import { ButtonCard } from "@/components/cards";
 
 const Photos = dynamic(() => import("@/components/photos-wrapper"), {
   ssr: false,
@@ -63,11 +64,11 @@ const ProfilePage = () => {
   };
 
   return (
-    <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto">
+    <main className="flex lg:flex-row flex-col no-nav p-5 lg:overflow-hidden overflow-auto !justify-start">
       <div className="flex lg:flex-col lg:h-min flex-row lg:w-[400px] w-full p-5 lg:p-10 shrink-0 lg:bg-white rounded-xl lg:custom-shadow gap-10 lg:self-center">
         {error ? <p className="error form-annoucment">{error}</p> : null}
         <div className="flex flex-row justify-center lg:w-full h-[200px]">
-          <form>
+          <form className="lg:block hidden">
             <label htmlFor="file" className="relative">
               <input
                 type="file"
@@ -94,6 +95,17 @@ const ProfilePage = () => {
               />
             </label>
           </form>
+          <Image
+            width={200}
+            height={200}
+            src={
+              userProfilePicture
+                ? userProfilePicture
+                : "/no-profile-picture.webp"
+            }
+            alt="profile picture"
+            className="rounded-lg object-cover lg:w-[200px] min-w-[150px] lg:h-[200px] h-[150px] lg:hidden block"
+          />
         </div>
         <div className="w-full">
           <div className="lg:flex flex-col gap-2 hidden">
@@ -120,8 +132,22 @@ const ProfilePage = () => {
             Email: {user?.email ?? ""}
             <Divider />
             Photos Taken: {numberPhotos ?? 0}
-            <div className="flex justify-center">
+            <div className="flex flex-col justify-center lg:gap-0 gap-1">
               <UploadModal />
+              <form className="lg:hidden">
+                <label htmlFor="file" className="relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="file"
+                    required
+                    disabled={isPending}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <ButtonCard>PROFILE PICTURE</ButtonCard>
+                </label>
+              </form>
             </div>
           </div>
         </div>
