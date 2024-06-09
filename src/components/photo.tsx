@@ -12,26 +12,35 @@ import Comments from "@/components/comments";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Divider from "@mui/material/Divider";
 import SettingsModal from "./settings-modal";
+import { getUserID } from "@/lib/auth";
 
 export default function Photo() {
   const searchParams = useSearchParams();
   const pid = searchParams.get("id");
   const [photo, setPhoto] = useState<PhotoWithUser>();
   const [exif, setExif] = useState<Prisma.Metadata>();
+  const [userID, setUserID] = useState<string | undefined>();
 
   if (pid)
     useEffect(() => {
       const load = async () => {
         const photo = await loadPhotoWithUser(pid);
         const exif = await loadExifDatabase(pid);
-        return { photo, exif };
+        const userId = await getUserID();
+        return { photo, exif, userId };
       };
 
       load().then((data) => {
         setPhoto(data.photo);
         setExif(data.exif);
+        setUserID(data.userId);
       });
     }, [pid]);
+
+  const getSettingsModal = () => {
+    if (exif && photo && photo?.userId == userID)
+      return <SettingsModal title={photo.title} exif={exif} />;
+  };
 
   const exifDataHTML = () => {
     return (
@@ -152,7 +161,7 @@ export default function Photo() {
                 <InsertLinkIcon />
               </Link>
             ) : null}
-            {exif ? <SettingsModal exif={exif} title={photo?.title} /> : null}
+            {exif ? getSettingsModal() : null}
           </div>
         </div>
         <Divider>COMMENTS</Divider>
